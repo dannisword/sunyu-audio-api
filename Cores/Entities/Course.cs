@@ -1,0 +1,120 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Sunyu.Audio.Cores.Entities;
+/// <summary>
+/// 課程清單
+/// </summary>
+[Table("course")]
+public class Course : EntityBase
+{
+    public Course()
+    {
+        this.CourseName = "";
+        this.CourseNumber = "";
+
+    }
+
+    /// <summary>
+    /// 課程名稱
+    /// </summary>
+    /// <value></value>
+    public string CourseName { get; set; }
+    /// <summary>
+    /// 課程編號西元年月日+2碼流水號
+    /// </summary>
+    /// <value></value>
+    public string CourseNumber { get; set; }
+    /// <summary>
+    /// 開始時間
+    /// </summary>
+    /// <value></value>
+    public DateTime? StartTime { get; set; }
+    /// <summary>
+    /// 結束時間
+    /// </summary>
+    /// <value></value>
+    public DateTime? EndTime { get; set; }
+
+    public int? Host { get; set; }
+    /// <summary>
+    /// 講師類型 1:內部 2:外部
+    /// </summary>
+    /// <value></value>
+    public int? LecturerType { get; set; }
+    /// <summary>
+    /// 內部講師Seq
+    /// </summary>
+    /// <value></value>
+    public int? Lecturer { get; set; }
+    /// <summary>
+    /// 外部講師Seq
+    /// </summary>
+    /// <value></value>
+    public int? OtherLecturer { get; set; }
+    /// <summary>
+    /// 報名方法 0:限制報名 1:公開報名 2:必修
+    /// </summary>
+    /// <value></value>
+    public int OpenSignUp { get; set; }
+    /// <summary>
+    /// 開放外部報名 0:不開放 1:開放
+    /// </summary>
+    /// <value></value>
+    public int AllowExternal { get; set; }
+    /// <summary>
+    /// 滿意度調查表
+    /// </summary>
+    /// <value></value>
+    public int CourseSurvey1 { get; set; }
+    /// <summary>
+    /// 訓後成效追蹤表
+    /// </summary>
+    /// <value></value>
+    public int CourseSurvey2 { get; set; }
+    /// <summary>
+    /// 課後行動方案
+    /// </summary>
+    /// <value></value>
+    public int CourseSurvey3 { get; set; }
+    /// <summary>
+    /// 課程簡介
+    /// </summary>
+    /// <value></value>
+    public string? CourseMemo { get; set; }
+    /// <summary>
+    /// 作者介紹
+    /// </summary>
+    /// <value></value>
+    public string? AuthorMemo { get; set; }
+    /// <summary>
+    /// 課程重點
+    /// </summary>
+    /// <value></value>
+    public string? CourseFocus { get; set; }
+    /// <summary>
+    /// 課程發佈狀態 1:發佈 0:未發佈
+    /// </summary>
+    /// <value></value>
+    public int CourseRelease { get; set; }
+
+    /// <summary>
+    /// 刪除註記
+    /// </summary>
+    /// <value></value>
+    public int DeleteTag { get; set; }
+
+    /// <summary>
+    /// 課程附件
+    /// </summary>
+    /// <value></value>
+    //[InverseProperty("course_appendix")]
+    [NotMapped]
+    public ICollection<CourseAppendix>? Appendiies { get; set; }
+    /// <summary>
+    /// 播放紀錄
+    /// </summary>
+    /// <value></value>
+    [NotMapped]
+    public ICollection<CoursePlayRecord>? PlayRecords { get; set; }
+}
