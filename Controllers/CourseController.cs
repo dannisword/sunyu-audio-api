@@ -17,16 +17,18 @@ public class CourseController : DefaultController
     {
         this.service = service;
     }
+
     /// <summary>
     /// 所有課程
     /// </summary>
     /// <param name="lecturerType"></param>
-    /// <param name="pageIndex"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Get(int? lecturerType, int pageIndex)
+    public IActionResult Get(int? lecturerType, int currentPage = 1, int itemsPerPage = 10)
     {
-        return this.Ok(this.service.Reads(null, lecturerType));
+        return this.Ok(this.service.Reads(null, lecturerType, currentPage, itemsPerPage));
     }
     /// <summary>
     /// 課程明細
@@ -41,40 +43,46 @@ public class CourseController : DefaultController
     /// <summary>
     /// 繼續看
     /// </summary>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
     /// <returns></returns>
     [HttpGet("Half")]
-    public IActionResult Half()
+    public IActionResult Half(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
-        return this.Ok(this.service.Half(userSeq));
+        return this.Ok(this.service.Half(userSeq, currentPage, itemsPerPage));
     }
 
     /// <summary>
     /// 我的課程
     /// </summary>
-    /// <param name="userSeq"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
     /// <returns></returns>
     [HttpGet("Mine")]
-    public IActionResult Mine()
+    public IActionResult Mine(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
-        return this.Ok(this.service.Mine(userSeq));
+        return this.Ok(this.service.Mine(userSeq, currentPage, itemsPerPage));
     }
     /// <summary>
     /// 最新課程
     /// </summary>
-    /// <param name="userSeq"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
     /// <returns></returns>
     [HttpGet("Last")]
-    public IActionResult Last()
+    public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
-        return this.Ok(this.service.Last(userSeq));
+        return this.Ok(this.service.Last(userSeq, currentPage, itemsPerPage));
     }
     /// <summary>
     /// 設定播放紀錄
     /// </summary>
     /// <param name="Seq"></param>
+    /// <param name="Unit"></param>
+    /// <param name="PlayRecord"></param>
     /// <returns></returns>
     [HttpPut("{Seq}/{Unit}")]
     public IActionResult Play(int Seq, string Unit, CoursePlayRecord PlayRecord)
@@ -82,8 +90,26 @@ public class CourseController : DefaultController
         return this.Ok(this.service.Play(PlayRecord));
     }
 
-
-
+    /// <summary>
+    /// 新增指定課程
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [HttpPost("Designate")]
+    public IActionResult AddDesignate(CourseDesignate entity)
+    {
+        return this.Ok(this.service.AddDesignate(entity));
+    }
+    /// <summary>
+    /// 更新指定課程
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [HttpPut("Designate")]
+    public IActionResult UpdateDesignate(CourseDesignate entity)
+    {
+        return this.Ok(this.service.AddDesignate(entity));
+    }
 
     /// <summary>
     /// 新增課程

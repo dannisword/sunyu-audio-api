@@ -53,7 +53,7 @@ public class CourseServices : ICourseServices
         }
     }
 
-    public IEnumerable<dynamic> Reads(int? seq, int? lecturerType)
+    public IEnumerable<dynamic> Reads(int? seq, int? lecturerType, int currentPage, int itemsPerPage)
     {
         using (var context = new DatabaseContext(this.config))
         {
@@ -67,11 +67,12 @@ public class CourseServices : ICourseServices
             {
                 q = q.Where(p => p.LecturerType == lecturerType);
             }
-            return q.ToList();
+
+            return q.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
 
-    public IEnumerable<dynamic> Last(int userSeq)
+    public IEnumerable<dynamic> Last(int userSeq, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
@@ -83,34 +84,33 @@ public class CourseServices : ICourseServices
                     // 加上部門
                     select a;
 
-            return q.Include(x => x.Appendiies).ToList();
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
         }
     }
 
-    public IEnumerable<dynamic> Half(int userSeq)
+    public IEnumerable<dynamic> Half(int userSeq, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
-                    join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                    where b.SignUpUser == userSeq
+                    //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                    //where b.SignUpUser == userSeq
                     select a;
 
-            return q.Include(x => x.Appendiies).ToList();
-                    //.Include(x => x.PlayRecords).ToList();
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
         }
     }
 
-    public IEnumerable<dynamic> Mine(int userSeq)
+    public IEnumerable<dynamic> Mine(int userSeq, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
-                    join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                    where b.SignUpUser == userSeq
+                    //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                    //where b.SignUpUser == userSeq
                     select a;
 
-            return q.Include(x => x.Appendiies).ToList();
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
         }
     }
 
@@ -139,6 +139,26 @@ public class CourseServices : ICourseServices
             }
 
             return db.SaveChanges();
+        }
+    }
+
+    public int AddDesignate(CourseDesignate entity)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            context.CourseDesignates?.Add(entity);
+            var code = context.SaveChanges();
+            return code;
+        }
+    }
+
+    public int UpdateDesignate(CourseDesignate entity)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            context.CourseDesignates?.Update(entity);
+            var code = context.SaveChanges();
+            return code;
         }
     }
 }

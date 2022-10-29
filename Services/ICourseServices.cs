@@ -12,14 +12,18 @@ public interface ICourseServices
 
     Course? Read(int seq);
 
-    IEnumerable<dynamic> Reads(int? seq, int? lecturerType);
+    IEnumerable<dynamic> Reads(int? seq, int? lecturerType, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Last(int userSeq);
+    IEnumerable<dynamic> Last(int userSeq, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Half(int userSeq);
+    IEnumerable<dynamic> Half(int userSeq, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Mine(int userSeq);
+    IEnumerable<dynamic> Mine(int userSeq, int currentPage, int itemsPerPage);
 
     int Play(CoursePlayRecord record);
+
+    int AddDesignate(CourseDesignate entity);
+
+    int UpdateDesignate(CourseDesignate entity);
 
 }
