@@ -32,10 +32,11 @@ namespace Sunyu.Audio.Cores.Infrastructure
             .HasForeignKey(p => p.CourseSeq)
             .HasConstraintName("course_appendix");
 
+/*
              modelBuilder.Entity<Course>()
              .HasMany(x=> x.PlayRecords)
              .WithOne()
-             .HasForeignKey(p=>p.CourseSeq);
+             .HasForeignKey(p=>p.CourseSeq);*/
 
         }
     }

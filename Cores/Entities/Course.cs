@@ -97,6 +97,11 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     public int CourseRelease { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <value></value>
+    public DateTime ReleaseDate { get; set; }
 
     /// <summary>
     /// 刪除註記
@@ -115,6 +120,6 @@ public class Course : EntityBase
     /// 播放紀錄
     /// </summary>
     /// <value></value>
-    [NotMapped]
-    public ICollection<CoursePlayRecord>? PlayRecords { get; set; }
+    //[NotMapped]
+    //public ICollection<CoursePlayRecord>? PlayRecords { get; set; }
 }

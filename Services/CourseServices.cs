@@ -96,8 +96,8 @@ public class CourseServices : ICourseServices
                     where b.SignUpUser == userSeq
                     select a;
 
-            return q.Include(x => x.Appendiies)
-                    .Include(x => x.PlayRecords).ToList();
+            return q.Include(x => x.Appendiies).ToList();
+                    //.Include(x => x.PlayRecords).ToList();
         }
     }
 
