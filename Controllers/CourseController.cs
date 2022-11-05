@@ -89,7 +89,25 @@ public class CourseController : DefaultController
     {
         return this.Ok(this.service.Play(PlayRecord));
     }
-
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
+    [HttpGet("Designates")]
+    public IActionResult GetDesignates()
+    {
+        return this.Ok(this.service.GetDesignates());
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="courseSeq"></param>
+    /// <returns></returns>
+    [HttpGet("Designate/{Seq}")]
+    public IActionResult GetDesignate(int courseSeq)
+    {
+        return this.Ok(this.service.GetDesignate(courseSeq));
+    }
     /// <summary>
     /// 新增指定課程
     /// </summary>

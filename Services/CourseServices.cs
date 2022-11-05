@@ -84,7 +84,7 @@ public class CourseServices : ICourseServices
                     // 加上部門
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
 
@@ -93,11 +93,11 @@ public class CourseServices : ICourseServices
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
-                    //join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                    //where b.SignUpUser == userSeq
+                        //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                        //where b.SignUpUser == userSeq
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
 
@@ -106,11 +106,11 @@ public class CourseServices : ICourseServices
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
-                    //join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                    //where b.SignUpUser == userSeq
+                        //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                        //where b.SignUpUser == userSeq
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList(); 
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
 
@@ -139,6 +139,28 @@ public class CourseServices : ICourseServices
             }
 
             return db.SaveChanges();
+        }
+    }
+
+    public IEnumerable<CourseDesignate> GetDesignates()
+    {
+        using (var db = new DatabaseContext(this.config))
+        {
+            var q = from a in db.CourseDesignates
+                        //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                        //where b.SignUpUser == userSeq
+                    select a;
+            return q.ToList();
+        }
+    }
+
+    public CourseDesignate GetDesignate(int courseSeq)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            return context.CourseDesignates
+            .Where(p => p.CourseSeq == courseSeq)
+            .FirstOrDefault();
         }
     }
 

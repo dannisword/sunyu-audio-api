@@ -22,6 +22,10 @@ public interface ICourseServices
 
     int Play(CoursePlayRecord record);
 
+    IEnumerable<CourseDesignate> GetDesignates();
+
+    CourseDesignate GetDesignate(int courseSeq);
+    
     int AddDesignate(CourseDesignate entity);
 
     int UpdateDesignate(CourseDesignate entity);

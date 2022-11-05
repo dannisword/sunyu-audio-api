@@ -35,8 +35,21 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     public DateTime? EndTime { get; set; }
-
-    public int? Host { get; set; }
+    /// <summary>
+    /// 職能類別
+    /// </summary>
+    /// <value></value>
+    public int? FunctionCategory { get; set; }
+    /// <summary>
+    /// 訓練目的
+    /// </summary>
+    /// <value></value>
+    public int? TrainingGoal { get; set; }
+    /// <summary>
+    /// 其他訓練目的
+    /// </summary>
+    /// <value></value>
+    public string? OtherTrainingGoal { get; set; }
     /// <summary>
     /// 講師類型 1:內部 2:外部
     /// </summary>
@@ -52,6 +65,16 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     public int? OtherLecturer { get; set; }
+    /// <summary>
+    /// 訓練對象 對應表:training_object
+    /// </summary>
+    /// <value></value>
+    public int TrainingObject { get; set; }
+    /// <summary>
+    /// 其他訓練對象
+    /// </summary>
+    /// <value></value>
+    public string? OtherTrainingObject { get; set; }
     /// <summary>
     /// 報名方法 0:限制報名 1:公開報名 2:必修
     /// </summary>
@@ -101,7 +124,7 @@ public class Course : EntityBase
     /// 
     /// </summary>
     /// <value></value>
-    public DateTime ReleaseDate { get; set; }
+    public DateTime? ReleaseDate { get; set; }
 
     /// <summary>
     /// 刪除註記
