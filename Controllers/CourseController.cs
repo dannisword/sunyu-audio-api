@@ -6,7 +6,7 @@ namespace Sunyu.Audio.Controllers;
 
 [Tags("課程")]
 [ApiController]
-[Route("v1/[controller]")]
+[Route("v1/")]
 [Produces("application/json")]
 public class CourseController : DefaultController
 {
@@ -25,7 +25,7 @@ public class CourseController : DefaultController
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("Course/")]
     public IActionResult Get(int? lecturerType, int currentPage = 1, int itemsPerPage = 10)
     {
         return this.Ok(this.service.Reads(null, lecturerType, currentPage, itemsPerPage));
@@ -35,7 +35,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="seq"></param>
     /// <returns></returns>
-    [HttpGet("{Seq}")]
+    [HttpGet("Course/{Seq}")]
     public IActionResult Get(int Seq)
     {
         return this.Ok(this.service.Read(Seq));
@@ -46,7 +46,7 @@ public class CourseController : DefaultController
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    [HttpGet("Half")]
+    [HttpGet("Course/Half")]
     public IActionResult Half(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
@@ -59,7 +59,7 @@ public class CourseController : DefaultController
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    [HttpGet("Mine")]
+    [HttpGet("Course/Mine")]
     public IActionResult Mine(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
@@ -71,7 +71,7 @@ public class CourseController : DefaultController
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    [HttpGet("Last")]
+    [HttpGet("Course/Last")]
     public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
@@ -84,7 +84,7 @@ public class CourseController : DefaultController
     /// <param name="Unit"></param>
     /// <param name="PlayRecord"></param>
     /// <returns></returns>
-    [HttpPut("{Seq}/{Unit}")]
+    [HttpPut("Course/{Seq}/{Unit}")]
     public IActionResult Play(int Seq, string Unit, CoursePlayRecord PlayRecord)
     {
         return this.Ok(this.service.Play(PlayRecord));
@@ -93,7 +93,7 @@ public class CourseController : DefaultController
     /// 
     /// </summary>
     /// <returns></returns>
-    [HttpGet("Designates")]
+    [HttpGet("Course/Designates")]
     public IActionResult GetDesignates()
     {
         return this.Ok(this.service.GetDesignates());
@@ -103,7 +103,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="courseSeq"></param>
     /// <returns></returns>
-    [HttpGet("Designate/{Seq}")]
+    [HttpGet("Course/Designate/{Seq}")]
     public IActionResult GetDesignate(int courseSeq)
     {
         return this.Ok(this.service.GetDesignate(courseSeq));
@@ -113,7 +113,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpPost("Designate")]
+    [HttpPost("Course/Designate")]
     public IActionResult AddDesignate(CourseDesignate entity)
     {
         return this.Ok(this.service.AddDesignate(entity));
@@ -123,7 +123,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpPut("Designate")]
+    [HttpPut("Course/Designate")]
     public IActionResult UpdateDesignate(CourseDesignate entity)
     {
         return this.Ok(this.service.AddDesignate(entity));
@@ -133,7 +133,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="courseSeq"></param>
     /// <returns></returns>
-    [HttpGet("ViewHistories/{courseSeq}")]
+    [HttpGet("Course/ViewHistories/{courseSeq}")]
     public IActionResult GetViewHistories(int courseSeq)
     {
         return this.Ok(this.service.GetViewHistories(courseSeq));
@@ -144,7 +144,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpPost("ViewHistory")]
+    [HttpPost("Course/ViewHistory")]
     public IActionResult SetViewHistory(ViewHistory entity)
     {
         entity.CreatDate = DateTime.Now;
@@ -167,7 +167,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("Course/")]
     public IActionResult Post(Course entity)
     {
         return this.Ok(this.service.Create(entity));
@@ -178,7 +178,7 @@ public class CourseController : DefaultController
     /// <param name="Seq"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpPut("{Seq}")]
+    [HttpPut("Course/{Seq}")]
     public IActionResult Put(int Seq, Course entity)
     {
         return this.Ok(this.service.Update(entity));
@@ -189,7 +189,7 @@ public class CourseController : DefaultController
     /// <param name="Seq"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    [HttpDelete("{Seq}")]
+    [HttpDelete("Course/{Seq}")]
     public IActionResult Delete(int Seq, Course entity)
     {
         return this.Ok(this.service.Delete(entity));
