@@ -154,11 +154,11 @@ public class CourseServices : ICourseServices
         }
     }
 
-    public CourseDesignate GetDesignate(int courseSeq)
+    public CourseDesignate? GetDesignate(int courseSeq)
     {
         using (var context = new DatabaseContext(this.config))
         {
-            return context.CourseDesignates
+            return context.CourseDesignates?
             .Where(p => p.CourseSeq == courseSeq)
             .FirstOrDefault();
         }
@@ -181,6 +181,46 @@ public class CourseServices : ICourseServices
             context.CourseDesignates?.Update(entity);
             var code = context.SaveChanges();
             return code;
+        }
+    }
+
+    public dynamic GetViewHistories(int courseSeq)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            var appendiies = context.CourseAppendies?.Where(p => p.CourseSeq == courseSeq).ToList();
+            foreach (var appendix in appendiies)
+            {
+                var history = context.ViewHistories?.Where(p => p.AppendixSeq == appendix.Seq).FirstOrDefault();
+                appendix.History = history == null ? new ViewHistory() : history;
+            }
+            return appendiies;
+        }
+    }
+
+    public int SetViewHistory(ViewHistory entity)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            if (entity.Seq > 0)
+            {
+                context.ViewHistories?.Update(entity);
+                return context.SaveChanges();
+            }
+            else
+            {
+                context.ViewHistories?.Add(entity);
+                return context.SaveChanges();
+            }
+        }
+    }
+
+    public User getUserInfo(int userSeq)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            return context.Users.Where(p=> p.UserSeq == userSeq).FirstOrDefault();
+            
         }
     }
 }

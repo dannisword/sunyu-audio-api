@@ -89,10 +89,10 @@ public class CourseController : DefaultController
     {
         return this.Ok(this.service.Play(PlayRecord));
     }
-/// <summary>
-/// 
-/// </summary>
-/// <returns></returns>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("Designates")]
     public IActionResult GetDesignates()
     {
@@ -128,7 +128,40 @@ public class CourseController : DefaultController
     {
         return this.Ok(this.service.AddDesignate(entity));
     }
+    /// <summary>
+    /// 取得播放紀錄
+    /// </summary>
+    /// <param name="courseSeq"></param>
+    /// <returns></returns>
+    [HttpGet("ViewHistories/{courseSeq}")]
+    public IActionResult GetViewHistories(int courseSeq)
+    {
+        return this.Ok(this.service.GetViewHistories(courseSeq));
+    }
 
+    /// <summary>
+    /// 設定播放紀錄
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [HttpPost("ViewHistory")]
+    public IActionResult SetViewHistory(ViewHistory entity)
+    {
+        entity.CreatDate = DateTime.Now;
+        entity.CreatUser = 1;
+        return this.Ok(this.service.SetViewHistory(entity));
+    }
+
+    /// <summary>
+    /// 取的權限
+    /// </summary>
+    /// <param name="userSeq"></param>
+    /// <returns></returns>
+    [HttpGet("User/{userSeq}")]
+    public IActionResult GetUser(int userSeq)
+    {
+        return this.Ok(this.service.getUserInfo(userSeq));
+    }
     /// <summary>
     /// 新增課程
     /// </summary>

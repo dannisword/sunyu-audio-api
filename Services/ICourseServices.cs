@@ -25,9 +25,15 @@ public interface ICourseServices
     IEnumerable<CourseDesignate> GetDesignates();
 
     CourseDesignate GetDesignate(int courseSeq);
-    
+
     int AddDesignate(CourseDesignate entity);
 
     int UpdateDesignate(CourseDesignate entity);
+
+    dynamic GetViewHistories(int courseSeq);
+
+    int SetViewHistory(ViewHistory entity);
+
+    User getUserInfo(int userSeq);
 
 }

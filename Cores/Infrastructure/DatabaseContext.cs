@@ -7,11 +7,15 @@ namespace Sunyu.Audio.Cores.Infrastructure
     public class DatabaseContext : DbContext
     {
         private string connectString;
+
+        public DbSet<User>? Users { get; set; }
         public DbSet<Course>? Courses { get; set; }
         public DbSet<CourseAppendix>? CourseAppendies { get; set; }
         public DbSet<CourseSignup>? CourseSignups { get; set; }
         public DbSet<CourseDesignate>? CourseDesignates { get; set; }
         public DbSet<CoursePlayRecord>? CoursePlayRecords { get; set; }
+
+        public DbSet<ViewHistory>? ViewHistories { get; set; }
 
         public DatabaseContext(IConfiguration configuration) : base()
         {
@@ -33,10 +37,16 @@ namespace Sunyu.Audio.Cores.Infrastructure
             .HasConstraintName("course_appendix");
 
 /*
-             modelBuilder.Entity<Course>()
-             .HasMany(x=> x.PlayRecords)
-             .WithOne()
-             .HasForeignKey(p=>p.CourseSeq);*/
+            modelBuilder.Entity<CourseAppendix>()
+            .HasOne(p => p.History)
+            .WithOne(p => p.CourseAppendix)
+            .HasForeignKey<ViewHistory>(p => p.AppendixSeq);
+*/
+            /*
+                         modelBuilder.Entity<Course>()
+                         .HasMany(x=> x.PlayRecords)
+                         .WithOne()
+                         .HasForeignKey(p=>p.CourseSeq);*/
 
         }
     }

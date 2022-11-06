@@ -60,4 +60,10 @@ public class CourseAppendix : EntityBase
     /// </summary>
     /// <value></value>
     public int DeleteTag { get; set; }
+    /// <summary>
+    /// 觀看紀錄
+    /// </summary>
+    /// <value></value>
+    [NotMapped]
+    public ViewHistory? History { get; set; }
 }

@@ -14,13 +14,13 @@ public class User
         this.UserName = "";
         this.UserAccount = "";
         this.UserPassword = "";
-        this.UserRole = "";
         this.UserMail = "";
     }
     /// <summary>
     /// 流水序
     /// </summary>
     /// <value></value>
+    [Key]
     public int UserSeq { get; set; }
     /// <summary>
     /// 員工編號
@@ -46,7 +46,7 @@ public class User
     /// UserRole
     /// </summary>
     /// <value></value>
-    public string UserRole { get; set; }
+    public int UserRole { get; set; }
     /// <summary>
     /// 使用者手機
     /// </summary>
@@ -61,7 +61,7 @@ public class User
     /// 使用者信箱
     /// </summary>
     /// <value></value>
-    public string UserMail { get; set; }
+    public string? UserMail { get; set; }
     /// <summary>
     /// 使用者單位 對應表unit
     /// </summary>
@@ -81,7 +81,7 @@ public class User
     /// 到職日期
     /// </summary>
     /// <value></value>
-    public DateTime StratWorkDay { get; set; }
+    public DateTime? StratWorkDay { get; set; }
     /// <summary>
     /// 建立日期
     /// </summary>
