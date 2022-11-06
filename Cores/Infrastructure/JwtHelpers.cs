@@ -12,7 +12,7 @@ public class JwtHelpers
         this.Configuration = configuration;
     }
 
-    public string GenerateToken(string userName, int expireMinutes = 30)
+    public string GenerateToken(string data, int expireMinutes = 30)
     {
         var issuer = Configuration.GetValue<string>("JwtSettings:Issuer");
         var signKey = Configuration.GetValue<string>("JwtSettings:SignKey");
@@ -22,7 +22,7 @@ public class JwtHelpers
 
         // In RFC 7519 (Section#4), there are defined 7 built-in Claims, but we mostly use 2 of them.
         //claims.Add(new Claim(JwtRegisteredClaimNames.Iss, issuer));
-        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userName)); // User.Identity.Name
+        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, data)); // User.Identity.Name
         //claims.Add(new Claim(JwtRegisteredClaimNames.Aud, "The Audience"));
         //claims.Add(new Claim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds().ToString()));
         //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())); // 必須為數字
