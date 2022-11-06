@@ -75,6 +75,7 @@ public class CourseController : DefaultController
     public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
+        
         return this.Ok(this.service.Last(userSeq, currentPage, itemsPerPage));
     }
     /// <summary>
@@ -160,7 +161,7 @@ public class CourseController : DefaultController
     [HttpGet("User/{userSeq}")]
     public IActionResult GetUser(int userSeq)
     {
-        return this.Ok(this.service.getUserInfo(userSeq));
+        return this.Ok(this.service.GetUserInfo(userSeq));
     }
     /// <summary>
     /// 新增課程

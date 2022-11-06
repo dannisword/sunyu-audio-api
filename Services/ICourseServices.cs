@@ -34,6 +34,6 @@ public interface ICourseServices
 
     int SetViewHistory(ViewHistory entity);
 
-    User getUserInfo(int userSeq);
+    User GetUserInfo(int userSeq);
 
 }

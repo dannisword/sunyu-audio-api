@@ -102,4 +102,11 @@ public class User
     /// </summary>
     /// <value></value>
     public int DeleteTag { get; set; }
+
+    /// <summary>
+    /// Token
+    /// </summary>
+    /// <value></value>
+    [NotMapped]
+    public string Token { get; set; }
 }

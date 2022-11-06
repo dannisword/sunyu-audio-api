@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sunyu.Audio.Cores.Entities;
 using Sunyu.Audio.Cores.Infrastructure;
+using System.Text.Json;
 
 namespace Sunyu.Audio.Services;
 
@@ -215,12 +216,24 @@ public class CourseServices : ICourseServices
         }
     }
 
-    public User getUserInfo(int userSeq)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="userSeq"></param>
+    /// <returns></returns>
+    public User? GetUserInfo(int userSeq)
     {
         using (var context = new DatabaseContext(this.config))
         {
-            return context.Users.Where(p=> p.UserSeq == userSeq).FirstOrDefault();
-            
+            JwtHelpers jw = new JwtHelpers(this.config);
+
+            var user = context.Users?.Where(p => p.UserSeq == userSeq).FirstOrDefault();
+            if (user != null)
+            {
+                var data = JsonSerializer.Serialize(user);
+                user.Token = jw.GenerateToken(data);
+            }
+            return user;
         }
     }
 }
