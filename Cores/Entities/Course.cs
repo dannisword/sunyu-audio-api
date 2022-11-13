@@ -144,5 +144,5 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     //[NotMapped]
-    //public ICollection<CoursePlayRecord>? PlayRecords { get; set; }
+    public ICollection<ViewHistory>? ViewHistories { get; set; }
 }

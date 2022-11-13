@@ -2,7 +2,7 @@ namespace Sunyu.Audio.Cores.Models;
 
 public class ResultModel
 {
-    public int ResultCode { get; set; }
+    public ResultCode ResultCode { get; set; }
 
     public string? Message { get; set; }
 
@@ -10,6 +10,15 @@ public class ResultModel
 
     public dynamic? Content { get; set; }
 
+    public ResultModel()
+    {
+        this.ResultCode = ResultCode.Success;
+    }
+    public ResultModel(ResultCode resultCode, string message)
+    {
+        this.ResultCode = resultCode;
+        this.Message = message;
+    }
 
 }
 
@@ -19,5 +28,5 @@ public class Pageable
 
     public int TotalPage { get; set; }
 
-    
+
 }

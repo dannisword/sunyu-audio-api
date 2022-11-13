@@ -5,9 +5,16 @@ namespace Sunyu.Audio.Cores.Entities;
 [Table("view_history")]
 public class ViewHistory : EntityBase
 {
+    public ViewHistory()
+    {
+
+    }
+
+    public int CourseSeq { get; set; }
+
     public int AppendixSeq { get; set; }
 
-    public string? ViewLastTime { get; set; }
+    public double ViewLastTime { get; set; }
 
     public int DeleteTag { get; set; }
 

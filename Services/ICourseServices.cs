@@ -32,6 +32,8 @@ public interface ICourseServices
 
     dynamic GetViewHistories(int courseSeq);
 
+    dynamic GetViewHistory(int courseSeq, int appendixSeq);
+
     int SetViewHistory(ViewHistory entity);
 
     User GetUserInfo(int userSeq);

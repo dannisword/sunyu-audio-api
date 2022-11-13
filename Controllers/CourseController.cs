@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sunyu.Audio.Services;
 using Sunyu.Audio.Cores.Entities;
+using Sunyu.Audio.Cores.Models;
 
 namespace Sunyu.Audio.Controllers;
 
@@ -75,7 +76,7 @@ public class CourseController : DefaultController
     public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
         var userSeq = 1;
-        
+
         return this.Ok(this.service.Last(userSeq, currentPage, itemsPerPage));
     }
     /// <summary>
@@ -139,7 +140,19 @@ public class CourseController : DefaultController
     {
         return this.Ok(this.service.GetViewHistories(courseSeq));
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="courseSeq"></param>
+    /// <param name="appendixSeq"></param>
+    /// <returns></returns>
+    [HttpGet("Course/ViewHistory/{courseSeq}/{appendixSeq}")]
+    public IActionResult GetViewHistory(int courseSeq, int appendixSeq)
+    {
+        var data = this.service.GetViewHistory(courseSeq, appendixSeq);
 
+        return this.Ok(data);
+    }
     /// <summary>
     /// 設定播放紀錄
     /// </summary>
@@ -148,9 +161,14 @@ public class CourseController : DefaultController
     [HttpPost("Course/ViewHistory")]
     public IActionResult SetViewHistory(ViewHistory entity)
     {
-        entity.CreatDate = DateTime.Now;
-        entity.CreatUser = 1;
-        return this.Ok(this.service.SetViewHistory(entity));
+        var resp = new ResultModel();
+        var eCode = this.service.SetViewHistory(entity);
+        if (eCode <= 0)
+        {
+            resp = new ResultModel(ResultCode.Failed, "異動觀看紀錄失敗！");
+        }
+
+        return this.Ok(resp);
     }
 
     /// <summary>

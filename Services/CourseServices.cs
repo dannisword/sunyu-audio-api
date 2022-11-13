@@ -47,10 +47,17 @@ public class CourseServices : ICourseServices
     {
         using (var context = new DatabaseContext(this.config))
         {
-            return context.Courses?
+            var course = context.Courses?
             .Where(p => p.Seq == seq)
             .Include(x => x.Appendiies)
             .FirstOrDefault();
+
+            if (course != null)
+            {
+                course.ViewHistories = context.ViewHistories?.Where(p => p.CourseSeq == seq).ToList();
+                //course.ViewHistories = context.ViewHistories.Where(p=>p.)
+            }
+            return course;
         }
     }
 
@@ -199,17 +206,35 @@ public class CourseServices : ICourseServices
         }
     }
 
+    public dynamic GetViewHistory(int courseSeq, int appendixSeq)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            var appendiies = context.ViewHistories?.Where(p => p.CourseSeq == courseSeq && p.AppendixSeq == appendixSeq);
+            if (appendiies?.FirstOrDefault() == null)
+            {
+                return new ViewHistory();
+            }
+            return appendiies.FirstOrDefault();
+        }
+    }
     public int SetViewHistory(ViewHistory entity)
     {
         using (var context = new DatabaseContext(this.config))
         {
-            if (entity.Seq > 0)
+            var history = context.ViewHistories.Where(x => x.CourseSeq == entity.CourseSeq && x.AppendixSeq == entity.AppendixSeq).FirstOrDefault();
+            if (history != null)
             {
-                context.ViewHistories?.Update(entity);
+                history.ModifyUser = 1;
+                history.ModifyDate = DateTime.Now;
+                history.ViewLastTime = entity.ViewLastTime;
+                context.ViewHistories?.Update(history);
                 return context.SaveChanges();
             }
             else
             {
+                entity.CreatUser = 1;
+                entity.CreatDate = DateTime.Now;
                 context.ViewHistories?.Add(entity);
                 return context.SaveChanges();
             }
