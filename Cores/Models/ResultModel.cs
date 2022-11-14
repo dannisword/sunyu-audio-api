@@ -10,6 +10,8 @@ public class ResultModel
 
     public dynamic? Content { get; set; }
 
+    public dynamic? Data { get; set; }
+
     public ResultModel()
     {
         this.ResultCode = ResultCode.Success;
@@ -19,7 +21,23 @@ public class ResultModel
         this.ResultCode = resultCode;
         this.Message = message;
     }
-
+    public ResultModel(ResultCode resultCode, bool isSuccess)
+    {
+        this.ResultCode = resultCode;
+        this.Data = isSuccess;
+    }
+    public ResultModel(IEnumerable<dynamic> source)
+    {
+        if (source.Count() > 0)
+        {
+            this.ResultCode = ResultCode.Success;
+        }
+        else
+        {
+            this.ResultCode = ResultCode.Failed;
+        }
+        this.Content = source;
+    }
 }
 
 public class Pageable

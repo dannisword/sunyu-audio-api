@@ -79,8 +79,14 @@ public class CourseServices : ICourseServices
             return q.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
-
-    public IEnumerable<dynamic> Last(int userSeq, int currentPage, int itemsPerPage)
+    /// <summary>
+    ///  最新上架
+    /// </summary>
+    /// <param name="User"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
+    /// <returns></returns>
+    public IEnumerable<dynamic> Last(User user, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
@@ -88,14 +94,24 @@ public class CourseServices : ICourseServices
 
             var q = from a in db.Courses
                     join b in db.CourseDesignates on a.Seq equals b.CourseSeq
-                    where a.StartTime >= lastAt
-                    // 加上部門
+                    where a.StartTime >= lastAt &&
+                          b.DivisionSeq == user.UserUnit && // 加上部門
+                          a.CourseRelease == 1
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+            return q.OrderBy(p => p.ReleaseDate)
+                    .Include(x => x.Appendiies)
+                    .Skip((currentPage - 1) * itemsPerPage)
+                    .Take(itemsPerPage).ToList();
         }
     }
-
+    /// <summary>
+    /// 繼續看
+    /// </summary>
+    /// <param name="userSeq"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
+    /// <returns></returns>
     public IEnumerable<dynamic> Half(int userSeq, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
@@ -108,14 +124,24 @@ public class CourseServices : ICourseServices
             return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
     }
-
-    public IEnumerable<dynamic> Mine(int userSeq, int currentPage, int itemsPerPage)
+    /// <summary>
+    /// 全部課程
+    /// </summary>
+    /// <param name="userSeq"></param>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
+    /// <returns></returns>
+    public IEnumerable<dynamic> Mine(User user, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
+            //var q = from a in db.Courses
+            //join b in db.CourseSignups on a.Seq equals b.CourseSeq
+            //where b.SignUpUser == userSeq
             var q = from a in db.Courses
-                        //join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                        //where b.SignUpUser == userSeq
+                    join b in db.CourseDesignates on a.Seq equals b.CourseSeq
+                    where b.DivisionSeq == user.UserUnit && // 加上部門
+                          a.CourseRelease == 1
                     select a;
 
             return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
@@ -218,14 +244,14 @@ public class CourseServices : ICourseServices
             return appendiies.FirstOrDefault();
         }
     }
-    public int SetViewHistory(ViewHistory entity)
+    public int SetViewHistory(ViewHistory entity, User? user)
     {
         using (var context = new DatabaseContext(this.config))
         {
-            var history = context.ViewHistories.Where(x => x.CourseSeq == entity.CourseSeq && x.AppendixSeq == entity.AppendixSeq).FirstOrDefault();
+            var history = context.ViewHistories?.Where(x => x.CourseSeq == entity.CourseSeq && x.AppendixSeq == entity.AppendixSeq).FirstOrDefault();
             if (history != null)
             {
-                history.ModifyUser = 1;
+                history.ModifyUser = user?.UserSeq;
                 history.ModifyDate = DateTime.Now;
                 history.ViewLastTime = entity.ViewLastTime;
                 context.ViewHistories?.Update(history);
@@ -233,7 +259,7 @@ public class CourseServices : ICourseServices
             }
             else
             {
-                entity.CreatUser = 1;
+                entity.CreatUser = user.UserSeq;
                 entity.CreatDate = DateTime.Now;
                 context.ViewHistories?.Add(entity);
                 return context.SaveChanges();

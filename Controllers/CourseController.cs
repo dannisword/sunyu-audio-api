@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+
+
 using Sunyu.Audio.Services;
 using Sunyu.Audio.Cores.Entities;
 using Sunyu.Audio.Cores.Models;
@@ -63,8 +65,17 @@ public class CourseController : DefaultController
     [HttpGet("Course/Mine")]
     public IActionResult Mine(int currentPage = 1, int itemsPerPage = 10)
     {
-        var userSeq = 1;
-        return this.Ok(this.service.Mine(userSeq, currentPage, itemsPerPage));
+        var auth = this.IsAuthorization();
+        if (auth.ResultCode != ResultCode.Success)
+        {
+            return this.Ok(auth);
+        }
+
+        var user = auth.Data;
+        var source = this.service.Mine(user, currentPage, itemsPerPage);
+        var response = new ResultModel(source);
+
+        return this.Ok(response);
     }
     /// <summary>
     /// 最新課程
@@ -75,9 +86,17 @@ public class CourseController : DefaultController
     [HttpGet("Course/Last")]
     public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
-        var userSeq = 1;
+        var auth = this.IsAuthorization();
+        if (auth.ResultCode != ResultCode.Success)
+        {
+            return this.Ok(auth);
+        }
 
-        return this.Ok(this.service.Last(userSeq, currentPage, itemsPerPage));
+        var user = auth.Data;
+
+        var source = this.service.Last(user, currentPage, itemsPerPage);
+        var response = new ResultModel(source);
+        return this.Ok(response);
     }
     /// <summary>
     /// 設定播放紀錄
@@ -161,13 +180,19 @@ public class CourseController : DefaultController
     [HttpPost("Course/ViewHistory")]
     public IActionResult SetViewHistory(ViewHistory entity)
     {
-        var resp = new ResultModel();
-        var eCode = this.service.SetViewHistory(entity);
+        var resp = this.IsAuthorization();
+        if (resp.ResultCode != ResultCode.Success)
+        {
+            return this.Ok(resp);
+        }
+
+        var user = this.GetUser();
+        var eCode = this.service.SetViewHistory(entity, user);
         if (eCode <= 0)
         {
             resp = new ResultModel(ResultCode.Failed, "異動觀看紀錄失敗！");
         }
-
+        resp.Content = entity;
         return this.Ok(resp);
     }
 
@@ -179,7 +204,18 @@ public class CourseController : DefaultController
     [HttpGet("User/{userSeq}")]
     public IActionResult GetUser(int userSeq)
     {
-        return this.Ok(this.service.GetUserInfo(userSeq));
+        var resp = new ResultModel();
+
+        var user = this.service.GetUserInfo(userSeq);
+        if (user == null)
+        {
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗！");
+        }
+        else
+        {
+            resp.Content = user;
+        }
+        return this.Ok(resp);
     }
     /// <summary>
     /// 新增課程
