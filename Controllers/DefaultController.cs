@@ -16,8 +16,13 @@ public class DefaultController : ControllerBase
     {
         this.configuration = configuration;
     }
-
-    public User? GetUser()
+    /// <summary>
+    /// 取得使用者資訊
+    /// </summary>
+    /// <param name="userSeq"></param>
+    /// <returns></returns>
+    [HttpGet("GetUserInfo")]
+    public User? GetUserInfo()
     {
         try
         {
@@ -37,6 +42,7 @@ public class DefaultController : ControllerBase
             return null;
         }
     }
+    [HttpGet("IsAuthorization")]
     public ResultModel IsAuthorization()
     {
         try

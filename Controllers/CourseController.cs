@@ -186,7 +186,7 @@ public class CourseController : DefaultController
             return this.Ok(resp);
         }
 
-        var user = this.GetUser();
+        var user = this.GetUserInfo();
         var eCode = this.service.SetViewHistory(entity, user);
         if (eCode <= 0)
         {
@@ -249,5 +249,13 @@ public class CourseController : DefaultController
     {
         return this.Ok(this.service.Delete(entity));
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("CourseTest")]
+    public IActionResult Test()
+    {
+        return this.Ok("service is available");
+    }
 }
