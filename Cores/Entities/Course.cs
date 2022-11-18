@@ -26,15 +26,25 @@ public class Course : EntityBase
     /// <value></value>
     public string CourseNumber { get; set; }
     /// <summary>
+    /// 
+    /// </summary>
+    /// <value></value>
+    public string? CourseImage { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <value></value>
+    public string? CourseImageType { get; set; }
+    /// <summary>
     /// 開始時間
     /// </summary>
     /// <value></value>
-    public DateTime? StartTime { get; set; }
+    public string? StartTime { get; set; }
     /// <summary>
     /// 結束時間
     /// </summary>
     /// <value></value>
-    public DateTime? EndTime { get; set; }
+    public string? EndTime { get; set; }
     /// <summary>
     /// 職能類別
     /// </summary>
@@ -111,6 +121,16 @@ public class Course : EntityBase
     /// <value></value>
     public string? AuthorMemo { get; set; }
     /// <summary>
+    /// 
+    /// </summary>
+    /// <value></value>
+    public string? AuthorImage { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <value></value>
+    public string? AuthorImageType { get; set; }
+    /// <summary>
     /// 課程重點
     /// </summary>
     /// <value></value>
@@ -124,7 +144,7 @@ public class Course : EntityBase
     /// 
     /// </summary>
     /// <value></value>
-    public DateTime? ReleaseDate { get; set; }
+    public string? ReleaseDate { get; set; }
 
     /// <summary>
     /// 刪除註記

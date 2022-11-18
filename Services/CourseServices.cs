@@ -90,12 +90,11 @@ public class CourseServices : ICourseServices
     {
         using (var db = new DatabaseContext(this.config))
         {
-            var lastAt = DateTime.Now.AddMonths(-3);
+            var lastAt = DateTime.Now.AddMonths(-3).ToString();
 
             var q = from a in db.Courses
                     join b in db.CourseDesignates on a.Seq equals b.CourseSeq
-                    where a.StartTime >= lastAt &&
-                          b.DivisionSeq == user.UserUnit && // 加上部門
+                    where b.DivisionSeq == user.UserUnit && // 加上部門
                           a.CourseRelease == 1
                     select a;
 

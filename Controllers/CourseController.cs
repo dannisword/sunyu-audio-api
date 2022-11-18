@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 
 using Sunyu.Audio.Services;
 using Sunyu.Audio.Cores.Entities;
@@ -28,7 +28,7 @@ public class CourseController : DefaultController
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    [HttpGet("Course/")]
+    [HttpGet("Course/"), Authorize]
     public IActionResult Get(int? lecturerType, int currentPage = 1, int itemsPerPage = 10)
     {
         return this.Ok(this.service.Reads(null, lecturerType, currentPage, itemsPerPage));

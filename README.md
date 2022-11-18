@@ -16,3 +16,7 @@ docker run --name sql2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=Qwer890@ -d mysql:8
 
 ## 安裝 JWT
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+
+
+## 發佈程式
+dotnet publish --configuration Release

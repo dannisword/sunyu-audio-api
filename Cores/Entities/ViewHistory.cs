@@ -14,7 +14,15 @@ public class ViewHistory : EntityBase
 
     public int AppendixSeq { get; set; }
 
+    public int UserSeq { get; set; }
+
     public double ViewLastTime { get; set; }
+
+    public DateTime? FristViewTime { get; set; }
+
+    public DateTime? FristFinishTime { get; set; }
+
+    public int ViewFinishTag { get; set; }
 
     public int DeleteTag { get; set; }
 
