@@ -4,13 +4,13 @@ public class ResultModel
 {
     public ResultCode ResultCode { get; set; }
 
-    public string? Message { get; set; }
+    public string Message { get; set; }
 
-    public Pageable? PageRequest { get; set; }
+    public Pageable PageRequest { get; set; }
 
-    public dynamic? Content { get; set; }
+    public dynamic Content { get; set; }
 
-    public dynamic? Data { get; set; }
+    public dynamic Data { get; set; }
 
     public ResultModel()
     {

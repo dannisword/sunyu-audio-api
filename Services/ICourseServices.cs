@@ -10,7 +10,7 @@ public interface ICourseServices
 
     int Delete(Course course);
 
-    Course? Read(int seq);
+    Course Read(int seq);
 
     IEnumerable<dynamic> Reads(int? seq, int? lecturerType, int currentPage, int itemsPerPage);
 
@@ -34,7 +34,9 @@ public interface ICourseServices
 
     dynamic GetViewHistory(int courseSeq, int appendixSeq);
 
-    int SetViewHistory(ViewHistory entity, UserInfo? user);
+    dynamic SetViewHistory(ViewHistory entity, UserInfo user);
+
+    dynamic SetViewHistoryEnd(UserInfo user, int seq);
 
     UserInfo GetUserInfo(int userSeq);
 

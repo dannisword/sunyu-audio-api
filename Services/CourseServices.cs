@@ -56,7 +56,6 @@ public class CourseServices : ICourseServices
             if (course != null)
             {
                 course.ViewHistories = context.ViewHistories?.Where(p => p.CourseSeq == seq).ToList();
-                //course.ViewHistories = context.ViewHistories.Where(p=>p.)
             }
             return course;
         }
@@ -120,13 +119,31 @@ public class CourseServices : ICourseServices
                     where b.UserSeq == user.UserSeq &&
                           b.ViewFinishTag == 0
                     select a;
+            return q.GroupBy(g => new
+            {
+                g.Seq,
+                g.CourseName,
+                g.CourseImage,
+                g.CourseImageType,
+                g.CourseMemo,
+                g.AuthorMemo,
+                g.AuthorImage,
+                g.AuthorImageType,
+                g.CourseFocus
 
-            var o = q.Include(x => x.Appendiies)
-                     .Skip((currentPage - 1) * itemsPerPage)
-                     .Take(itemsPerPage)
-                     .ToList();
+            }).Select(x => new
+            {
+                x.Key.Seq,
+                x.Key.CourseName,
+                x.Key.CourseImage,
+                x.Key.CourseImageType,
+                x.Key.CourseMemo,
+                x.Key.AuthorMemo,
+                x.Key.AuthorImage,
+                x.Key.AuthorImageType,
+                x.Key.CourseFocus
+            }).ToList();
 
-            return o.GroupBy(x => x).Select(x => x);
         }
     }
     /// <summary>
@@ -191,7 +208,7 @@ public class CourseServices : ICourseServices
         }
     }
 
-    public CourseDesignate? GetDesignate(int courseSeq)
+    public CourseDesignate GetDesignate(int courseSeq)
     {
         using (var context = new DatabaseContext(this.config))
         {
@@ -240,14 +257,14 @@ public class CourseServices : ICourseServices
         using (var context = new DatabaseContext(this.config))
         {
             var appendiies = context.ViewHistories?.Where(p => p.CourseSeq == courseSeq && p.AppendixSeq == appendixSeq);
-            if (appendiies?.FirstOrDefault() == null)
+            if (appendiies.FirstOrDefault() == null)
             {
                 return new ViewHistory();
             }
             return appendiies.FirstOrDefault();
         }
     }
-    public int SetViewHistory(ViewHistory entity, UserInfo? user)
+    public dynamic SetViewHistory(ViewHistory entity, UserInfo user)
     {
         using (var context = new DatabaseContext(this.config))
         {
@@ -258,24 +275,59 @@ public class CourseServices : ICourseServices
                 history.ModifyDate = DateTime.Now;
                 history.ViewLastTime = entity.ViewLastTime;
                 context.ViewHistories?.Update(history);
-                return context.SaveChanges();
+                if (context.SaveChanges() > 0)
+                {
+                    return history;
+                }
             }
             else
             {
+                entity.UserSeq = user.UserSeq;
+                entity.FristViewTime = DateTime.Now;
                 entity.CreatUser = user.UserSeq;
                 entity.CreatDate = DateTime.Now;
                 context.ViewHistories?.Add(entity);
-                return context.SaveChanges();
+                if (context.SaveChanges() > 0)
+                {
+                    return entity;
+                }
             }
+            return null;
         }
     }
 
+    public dynamic SetViewHistoryEnd(UserInfo user, int seq)
+    {
+        using (var context = new DatabaseContext(this.config))
+        {
+            var history = context.ViewHistories?.Where(x => x.Seq == seq).FirstOrDefault();
+            if (history == null)
+            {
+                return 0;
+            }
+            if (history.ViewFinishTag == 1)
+            {
+                return 0;
+            }
+            history.ModifyDate = DateTime.Now;
+            history.ModifyUser = user.UserSeq;
+            history.FristFinishTime = DateTime.Now;
+            history.ViewFinishTag = 1;
+            context.ViewHistories.Update(history);
+            if (context.SaveChanges() > 0)
+            {
+                return history;
+            }
+            return null;
+        }
+
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="userSeq"></param>
     /// <returns></returns>
-    public UserInfo? GetUserInfo(int userSeq)
+    public UserInfo GetUserInfo(int userSeq)
     {
         using (var context = new DatabaseContext(this.config))
         {

@@ -22,5 +22,5 @@ public class CourseSignup : EntityBase
 
     public DateTime? IsSignOutTime { get; set; }
 
-    public string? Memo { get; set; }
+    public string Memo { get; set; }
 }

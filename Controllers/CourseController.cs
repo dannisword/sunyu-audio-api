@@ -198,14 +198,38 @@ public class CourseController : DefaultController
         }
 
         var user = this.GetUserInfo();
-        var eCode = this.service.SetViewHistory(entity, user);
-        if (eCode <= 0)
+        var data = this.service.SetViewHistory(entity, user);
+        if (data == null)
         {
             resp = new ResultModel(ResultCode.Failed, "異動觀看紀錄失敗！");
         }
-        resp.Content = entity;
+        resp.Content = data;
         return this.Ok(resp);
     }
+    /// <summary>
+    /// 觀看結束時間
+    /// </summary>
+    /// <param name="seq"></param>
+    /// <returns></returns>
+    [HttpPut("Course/ViewHistory/End/{seq}")]
+    public IActionResult SetViewHistoryEnd(int seq)
+    {
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
+        {
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            return this.Ok(resp);
+        }
+        var user = this.GetUserInfo();
+        var data = this.service.SetViewHistoryEnd(user, seq);
+        if (data == null)
+        {
+            resp = new ResultModel(ResultCode.Failed, "異動觀看紀錄失敗！");
+        }
+        resp.Content = data;
+        return this.Ok(resp);
+    }
+
 
     /// <summary>
     /// 取的權限

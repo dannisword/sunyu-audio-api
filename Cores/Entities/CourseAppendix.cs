@@ -65,5 +65,5 @@ public class CourseAppendix : EntityBase
     /// </summary>
     /// <value></value>
     [NotMapped]
-    public ViewHistory? History { get; set; }
+    public ViewHistory History { get; set; }
 }
