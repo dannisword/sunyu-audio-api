@@ -3,19 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sunyu.Audio.Cores.Entities;
 [Table("user")]
-public class User
+public class UserInfo
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public User()
-    {
-        this.UserWorkNum = "";
-        this.UserName = "";
-        this.UserAccount = "";
-        this.UserPassword = "";
-        this.UserMail = "";
-    }
     /// <summary>
     /// 流水序
     /// </summary>
@@ -51,17 +40,17 @@ public class User
     /// 使用者手機
     /// </summary>
     /// <value></value>
-    public string? UserMobile { get; set; }
+    public string UserMobile { get; set; }
     /// <summary>
     /// 分機號碼
     /// </summary>
     /// <value></value>
-    public string? Extension { get; set; }
+    public string Extension { get; set; }
     /// <summary>
     /// 使用者信箱
     /// </summary>
     /// <value></value>
-    public string? UserMail { get; set; }
+    public string UserMail { get; set; }
     /// <summary>
     /// 使用者單位 對應表unit
     /// </summary>
@@ -71,17 +60,17 @@ public class User
     /// 使用者職稱
     /// </summary>
     /// <value></value>
-    public int? UserJobTitle { get; set; }
+    public int UserJobTitle { get; set; }
     /// <summary>
     /// 是否為管理職 0:否 1:部門主管 2:理級主管
     /// </summary>
     /// <value></value>
-    public int? Management { get; set; }
+    public int Management { get; set; }
     /// <summary>
     /// 到職日期
     /// </summary>
     /// <value></value>
-    public DateTime? StratWorkDay { get; set; }
+    public DateTime StratWorkDay { get; set; }
     /// <summary>
     /// 建立日期
     /// </summary>

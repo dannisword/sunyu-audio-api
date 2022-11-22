@@ -8,13 +8,6 @@ namespace Sunyu.Audio.Cores.Entities;
 [Table("course")]
 public class Course : EntityBase
 {
-    public Course()
-    {
-        this.CourseName = "";
-        this.CourseNumber = "";
-
-    }
-
     /// <summary>
     /// 課程名稱
     /// </summary>
@@ -29,52 +22,52 @@ public class Course : EntityBase
     /// 
     /// </summary>
     /// <value></value>
-    public string? CourseImage { get; set; }
+    public string CourseImage { get; set; }
     /// <summary>
     /// 
     /// </summary>
     /// <value></value>
-    public string? CourseImageType { get; set; }
+    public string CourseImageType { get; set; }
     /// <summary>
     /// 開始時間
     /// </summary>
     /// <value></value>
-    public string? StartTime { get; set; }
+    public string StartTime { get; set; }
     /// <summary>
     /// 結束時間
     /// </summary>
     /// <value></value>
-    public string? EndTime { get; set; }
+    public string EndTime { get; set; }
     /// <summary>
     /// 職能類別
     /// </summary>
     /// <value></value>
-    public int? FunctionCategory { get; set; }
+    public int FunctionCategory { get; set; }
     /// <summary>
     /// 訓練目的
     /// </summary>
     /// <value></value>
-    public int? TrainingGoal { get; set; }
+    public int TrainingGoal { get; set; }
     /// <summary>
     /// 其他訓練目的
     /// </summary>
     /// <value></value>
-    public string? OtherTrainingGoal { get; set; }
+    public string OtherTrainingGoal { get; set; }
     /// <summary>
     /// 講師類型 1:內部 2:外部
     /// </summary>
     /// <value></value>
-    public int? LecturerType { get; set; }
+    public int LecturerType { get; set; }
     /// <summary>
     /// 內部講師Seq
     /// </summary>
     /// <value></value>
-    public int? Lecturer { get; set; }
+    public int Lecturer { get; set; }
     /// <summary>
     /// 外部講師Seq
     /// </summary>
     /// <value></value>
-    public int? OtherLecturer { get; set; }
+    public int OtherLecturer { get; set; }
     /// <summary>
     /// 訓練對象 對應表:training_object
     /// </summary>
@@ -84,7 +77,7 @@ public class Course : EntityBase
     /// 其他訓練對象
     /// </summary>
     /// <value></value>
-    public string? OtherTrainingObject { get; set; }
+    public string OtherTrainingObject { get; set; }
     /// <summary>
     /// 報名方法 0:限制報名 1:公開報名 2:必修
     /// </summary>
@@ -114,27 +107,27 @@ public class Course : EntityBase
     /// 課程簡介
     /// </summary>
     /// <value></value>
-    public string? CourseMemo { get; set; }
+    public string CourseMemo { get; set; }
     /// <summary>
     /// 作者介紹
     /// </summary>
     /// <value></value>
-    public string? AuthorMemo { get; set; }
+    public string AuthorMemo { get; set; }
     /// <summary>
     /// 
     /// </summary>
     /// <value></value>
-    public string? AuthorImage { get; set; }
+    public string AuthorImage { get; set; }
     /// <summary>
     /// 
     /// </summary>
     /// <value></value>
-    public string? AuthorImageType { get; set; }
+    public string AuthorImageType { get; set; }
     /// <summary>
     /// 課程重點
     /// </summary>
     /// <value></value>
-    public string? CourseFocus { get; set; }
+    public string CourseFocus { get; set; }
     /// <summary>
     /// 課程發佈狀態 1:發佈 0:未發佈
     /// </summary>
@@ -144,7 +137,7 @@ public class Course : EntityBase
     /// 
     /// </summary>
     /// <value></value>
-    public string? ReleaseDate { get; set; }
+    public string ReleaseDate { get; set; }
 
     /// <summary>
     /// 刪除註記
@@ -158,11 +151,11 @@ public class Course : EntityBase
     /// <value></value>
     //[InverseProperty("course_appendix")]
     [NotMapped]
-    public ICollection<CourseAppendix>? Appendiies { get; set; }
+    public ICollection<CourseAppendix> Appendiies { get; set; }
     /// <summary>
     /// 播放紀錄
     /// </summary>
     /// <value></value>
     //[NotMapped]
-    public ICollection<ViewHistory>? ViewHistories { get; set; }
+    public ICollection<ViewHistory> ViewHistories { get; set; }
 }

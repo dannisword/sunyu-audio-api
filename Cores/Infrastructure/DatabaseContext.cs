@@ -8,14 +8,14 @@ namespace Sunyu.Audio.Cores.Infrastructure
     {
         private string connectString;
 
-        public DbSet<User>? Users { get; set; }
-        public DbSet<Course>? Courses { get; set; }
-        public DbSet<CourseAppendix>? CourseAppendies { get; set; }
-        public DbSet<CourseSignup>? CourseSignups { get; set; }
-        public DbSet<CourseDesignate>? CourseDesignates { get; set; }
-        public DbSet<CoursePlayRecord>? CoursePlayRecords { get; set; }
+        public DbSet<UserInfo> UserInfos { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseAppendix> CourseAppendies { get; set; }
+        public DbSet<CourseSignup> CourseSignups { get; set; }
+        public DbSet<CourseDesignate> CourseDesignates { get; set; }
+        public DbSet<CoursePlayRecord> CoursePlayRecords { get; set; }
 
-        public DbSet<ViewHistory>? ViewHistories { get; set; }
+        public DbSet<ViewHistory> ViewHistories { get; set; }
 
         public DatabaseContext(IConfiguration configuration) : base()
         {

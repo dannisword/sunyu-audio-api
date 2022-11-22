@@ -52,8 +52,16 @@ public class CourseController : DefaultController
     [HttpGet("Course/Half")]
     public IActionResult Half(int currentPage = 1, int itemsPerPage = 10)
     {
-        var userSeq = 1;
-        return this.Ok(this.service.Half(userSeq, currentPage, itemsPerPage));
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
+        {
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            return this.Ok(resp);
+        }
+        var user = this.GetUserInfo();
+        var source = this.service.Half(user, currentPage, itemsPerPage);
+        var response = new ResultModel(source);
+        return this.Ok(response);
     }
 
     /// <summary>
@@ -65,13 +73,14 @@ public class CourseController : DefaultController
     [HttpGet("Course/Mine")]
     public IActionResult Mine(int currentPage = 1, int itemsPerPage = 10)
     {
-        var auth = this.IsAuthorization();
-        if (auth.ResultCode != ResultCode.Success)
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
         {
-            return this.Ok(auth);
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            return this.Ok(resp);
         }
 
-        var user = auth.Data;
+        var user = this.GetUserInfo();
         var source = this.service.Mine(user, currentPage, itemsPerPage);
         var response = new ResultModel(source);
 
@@ -86,13 +95,14 @@ public class CourseController : DefaultController
     [HttpGet("Course/Last")]
     public IActionResult Last(int currentPage = 1, int itemsPerPage = 10)
     {
-        var auth = this.IsAuthorization();
-        if (auth.ResultCode != ResultCode.Success)
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
         {
-            return this.Ok(auth);
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            return this.Ok(resp);
         }
 
-        var user = auth.Data;
+        var user = this.GetUserInfo();
 
         var source = this.service.Last(user, currentPage, itemsPerPage);
         var response = new ResultModel(source);
@@ -180,9 +190,10 @@ public class CourseController : DefaultController
     [HttpPost("Course/ViewHistory")]
     public IActionResult SetViewHistory(ViewHistory entity)
     {
-        var resp = this.IsAuthorization();
-        if (resp.ResultCode != ResultCode.Success)
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
         {
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
             return this.Ok(resp);
         }
 
@@ -201,6 +212,7 @@ public class CourseController : DefaultController
     /// </summary>
     /// <param name="userSeq"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     [HttpGet("User/{userSeq}")]
     public IActionResult GetUser(int userSeq)
     {

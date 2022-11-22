@@ -1,8 +1,9 @@
 using System.Linq;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Sunyu.Audio.Cores.Entities;
 using Sunyu.Audio.Cores.Infrastructure;
-using System.Text.Json;
+using Sunyu.Audio.Cores.Extensions;
 
 namespace Sunyu.Audio.Services;
 
@@ -43,7 +44,7 @@ public class CourseServices : ICourseServices
         }
     }
 
-    public Course? Read(int seq)
+    public Course Read(int seq)
     {
         using (var context = new DatabaseContext(this.config))
         {
@@ -86,22 +87,21 @@ public class CourseServices : ICourseServices
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    public IEnumerable<dynamic> Last(User user, int currentPage, int itemsPerPage)
+    public IEnumerable<dynamic> Last(UserInfo user, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
-            var lastAt = DateTime.Now.AddMonths(-3).ToString();
+            var lastAt = DateTime.Now.AddMonths(-3).ToYYYYMMDD();
 
             var q = from a in db.Courses
-                    join b in db.CourseDesignates on a.Seq equals b.CourseSeq
-                    where b.DivisionSeq == user.UserUnit && // 加上部門
-                          a.CourseRelease == 1
+                    join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                    where b.SignUpUser == user.UserSeq &&
+                          a.CourseRelease == 1 &&
+                          a.ReleaseDate != "" &&
+                          a.ReleaseDate.CompareTo(lastAt) >= 0
+                    orderby a.ReleaseDate descending
                     select a;
-
-            return q.OrderBy(p => p.ReleaseDate)
-                    .Include(x => x.Appendiies)
-                    .Skip((currentPage - 1) * itemsPerPage)
-                    .Take(itemsPerPage).ToList();
+            return q.Include(x => x.Appendiies).ToList();
         }
     }
     /// <summary>
@@ -111,16 +111,22 @@ public class CourseServices : ICourseServices
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    public IEnumerable<dynamic> Half(int userSeq, int currentPage, int itemsPerPage)
+    public IEnumerable<dynamic> Half(UserInfo user, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
-                        //join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                        //where b.SignUpUser == userSeq
+                    join b in db.ViewHistories on a.Seq equals b.CourseSeq
+                    where b.UserSeq == user.UserSeq &&
+                          b.ViewFinishTag == 0
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+            var o = q.Include(x => x.Appendiies)
+                     .Skip((currentPage - 1) * itemsPerPage)
+                     .Take(itemsPerPage)
+                     .ToList();
+
+            return o.GroupBy(x => x).Select(x => x);
         }
     }
     /// <summary>
@@ -130,17 +136,15 @@ public class CourseServices : ICourseServices
     /// <param name="currentPage"></param>
     /// <param name="itemsPerPage"></param>
     /// <returns></returns>
-    public IEnumerable<dynamic> Mine(User user, int currentPage, int itemsPerPage)
+    public IEnumerable<dynamic> Mine(UserInfo user, int currentPage, int itemsPerPage)
     {
         using (var db = new DatabaseContext(this.config))
         {
-            //var q = from a in db.Courses
-            //join b in db.CourseSignups on a.Seq equals b.CourseSeq
-            //where b.SignUpUser == userSeq
             var q = from a in db.Courses
-                    join b in db.CourseDesignates on a.Seq equals b.CourseSeq
-                    where b.DivisionSeq == user.UserUnit && // 加上部門
+                    join b in db.CourseSignups on a.Seq equals b.CourseSeq
+                    where b.SignUpUser == user.UserSeq &&
                           a.CourseRelease == 1
+                    orderby a.ReleaseDate descending
                     select a;
 
             return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
@@ -243,7 +247,7 @@ public class CourseServices : ICourseServices
             return appendiies.FirstOrDefault();
         }
     }
-    public int SetViewHistory(ViewHistory entity, User? user)
+    public int SetViewHistory(ViewHistory entity, UserInfo? user)
     {
         using (var context = new DatabaseContext(this.config))
         {
@@ -271,13 +275,13 @@ public class CourseServices : ICourseServices
     /// </summary>
     /// <param name="userSeq"></param>
     /// <returns></returns>
-    public User? GetUserInfo(int userSeq)
+    public UserInfo? GetUserInfo(int userSeq)
     {
         using (var context = new DatabaseContext(this.config))
         {
             JwtHelpers jw = new JwtHelpers(this.config);
 
-            var user = context.Users?.Where(p => p.UserSeq == userSeq).FirstOrDefault();
+            var user = context.UserInfos?.Where(p => p.UserSeq == userSeq).FirstOrDefault();
             if (user != null)
             {
                 var data = JsonSerializer.Serialize(user);

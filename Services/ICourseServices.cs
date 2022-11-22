@@ -14,11 +14,11 @@ public interface ICourseServices
 
     IEnumerable<dynamic> Reads(int? seq, int? lecturerType, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Last(User user, int currentPage, int itemsPerPage);
+    IEnumerable<dynamic> Last(UserInfo user, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Half(int userSeq, int currentPage, int itemsPerPage);
+    IEnumerable<dynamic> Half(UserInfo user, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Mine(User user, int currentPage, int itemsPerPage);
+    IEnumerable<dynamic> Mine(UserInfo user, int currentPage, int itemsPerPage);
 
     int Play(CoursePlayRecord record);
 
@@ -34,8 +34,8 @@ public interface ICourseServices
 
     dynamic GetViewHistory(int courseSeq, int appendixSeq);
 
-    int SetViewHistory(ViewHistory entity, User? user);
+    int SetViewHistory(ViewHistory entity, UserInfo? user);
 
-    User GetUserInfo(int userSeq);
+    UserInfo GetUserInfo(int userSeq);
 
 }
