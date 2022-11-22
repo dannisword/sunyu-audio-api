@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // 驗證
 var issuer = builder.Configuration.GetValue<string>("JwtSettings:Issuer");
 var signKey = builder.Configuration.GetValue<string>("JwtSettings:SignKey");
-
+var route = builder.Configuration.GetValue<string>("RoutePrefix");
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -101,7 +101,7 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
+    options.RoutePrefix = route;
 });
 
 app.UseCors();
