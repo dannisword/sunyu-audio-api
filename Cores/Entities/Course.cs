@@ -109,6 +109,11 @@ public class Course : EntityBase
     /// <value></value>
     public string CourseMemo { get; set; }
     /// <summary>
+    /// 作者姓名
+    /// </summary>
+    /// <value></value>
+    public string AuthorName { get; set; }
+    /// <summary>
     /// 作者介紹
     /// </summary>
     /// <value></value>
