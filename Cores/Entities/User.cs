@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Sunyu.Audio.Cores.Entities;
 [Table("user")]
@@ -30,6 +31,7 @@ public class UserInfo
     /// 使用者密碼
     /// </summary>
     /// <value></value>
+    [JsonIgnore]
     public string UserPassword { get; set; }
     /// <summary>
     /// UserRole
@@ -98,4 +100,10 @@ public class UserInfo
     /// <value></value>
     [NotMapped]
     public string Token { get; set; }
+    /// <summary>
+    /// Expiration
+    /// </summary>
+    /// <value></value>
+    [NotMapped]
+    public DateTime? Expiration { get; set; }
 }

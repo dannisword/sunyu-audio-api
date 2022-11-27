@@ -20,6 +20,8 @@ public interface ICourseServices
 
     IEnumerable<dynamic> Mine(UserInfo user, int currentPage, int itemsPerPage);
 
+    IEnumerable<dynamic> Self(UserInfo user, int currentPage, int itemsPerPage);
+
     int Play(CoursePlayRecord record);
 
     IEnumerable<CourseDesignate> GetDesignates();

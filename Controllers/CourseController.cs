@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Sunyu.Audio.Services;
 using Sunyu.Audio.Cores.Entities;
 using Sunyu.Audio.Cores.Models;
+using Sunyu.Audio.Cores.Infrastructure;
 
 namespace Sunyu.Audio.Controllers;
 
@@ -55,7 +56,7 @@ public class CourseController : DefaultController
         var resp = new ResultModel();
         if (this.Identity.IsAuthenticated == false)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
             return this.Ok(resp);
         }
         var user = this.GetUserInfo();
@@ -76,7 +77,7 @@ public class CourseController : DefaultController
         var resp = new ResultModel();
         if (this.Identity.IsAuthenticated == false)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
             return this.Ok(resp);
         }
 
@@ -98,13 +99,35 @@ public class CourseController : DefaultController
         var resp = new ResultModel();
         if (this.Identity.IsAuthenticated == false)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
             return this.Ok(resp);
         }
 
         var user = this.GetUserInfo();
 
         var source = this.service.Last(user, currentPage, itemsPerPage);
+        var response = new ResultModel(source);
+        return this.Ok(response);
+    }
+    /// <summary>
+    /// 我的課程
+    /// </summary>
+    /// <param name="currentPage"></param>
+    /// <param name="itemsPerPage"></param>
+    /// <returns></returns>
+    [HttpGet("Course/Self")]
+    public IActionResult Self(int currentPage = 1, int itemsPerPage = 10)
+    {
+        var resp = new ResultModel();
+        if (this.Identity.IsAuthenticated == false)
+        {
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
+            return this.Ok(resp);
+        }
+
+        var user = this.GetUserInfo();
+
+        var source = this.service.Self(user, currentPage, itemsPerPage);
         var response = new ResultModel(source);
         return this.Ok(response);
     }
@@ -193,7 +216,7 @@ public class CourseController : DefaultController
         var resp = new ResultModel();
         if (this.Identity.IsAuthenticated == false)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
             return this.Ok(resp);
         }
 
@@ -217,7 +240,7 @@ public class CourseController : DefaultController
         var resp = new ResultModel();
         if (this.Identity.IsAuthenticated == false)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
             return this.Ok(resp);
         }
         var user = this.GetUserInfo();
@@ -229,8 +252,6 @@ public class CourseController : DefaultController
         resp.Content = data;
         return this.Ok(resp);
     }
-
-
     /// <summary>
     /// 取的權限
     /// </summary>
@@ -245,7 +266,7 @@ public class CourseController : DefaultController
         var user = this.service.GetUserInfo(userSeq);
         if (user == null)
         {
-            resp = new ResultModel(ResultCode.Failed, "驗證失敗！");
+            resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
         }
         else
         {
@@ -264,34 +285,158 @@ public class CourseController : DefaultController
         return this.Ok(this.service.Create(entity));
     }
     /// <summary>
-    /// 更新課程
-    /// </summary>
-    /// <param name="Seq"></param>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    [HttpPut("Course/{Seq}")]
-    public IActionResult Put(int Seq, Course entity)
-    {
-        return this.Ok(this.service.Update(entity));
-    }
-    /// <summary>
-    /// 刪除課程
-    /// </summary>
-    /// <param name="Seq"></param>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    [HttpDelete("Course/{Seq}")]
-    public IActionResult Delete(int Seq, Course entity)
-    {
-        return this.Ok(this.service.Delete(entity));
-    }
-    /// <summary>
     /// 
     /// </summary>
+    /// <param name="courseSeq"></param>
     /// <returns></returns>
-    [HttpGet("CourseTest")]
+    [HttpGet("CourseSignup")]
+    public IActionResult GetSignup(int courseSeq)
+    {
+        using (var context = new DatabaseContext(this.configuration))
+        {
+            var resp = new ResultModel();
+            if (User.Identity.IsAuthenticated == false)
+            {
+                resp = new ResultModel(ResultCode.Failed, "驗證失敗，請重新登入系統");
+                return this.Ok(resp);
+            }
+            var user = this.GetUserInfo();
+
+            var q = from a in context.CourseSignups
+                    where a.CourseSeq == courseSeq &&
+                          a.SignUpUser == user.UserSeq
+                    select a;
+            if (q.Any() == true)
+            {
+                resp.Content = q.FirstOrDefault();
+            }
+            else
+            {
+                resp = new ResultModel(ResultCode.NotFound, "請先進行報名，才能觀看影片");
+            }
+            return this.Ok(resp);
+        }
+    }
+
+    [HttpGet("Test")]
     public IActionResult Test()
     {
         return this.Ok("service is available");
     }
+
+    [AllowAnonymous]
+    [HttpGet("Course/Maps")]
+    public IActionResult GetMap()
+    {
+        using (var context = new DatabaseContext(this.configuration))
+        {
+            var maps = context.CourseMaps.Where(p => p.IsActive == 1).ToList();
+            return this.Ok(maps);
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [HttpPost("ViewLog")]
+    public IActionResult AddViewLog(ViewLog entity)
+    {
+        using (var context = new DatabaseContext(this.configuration))
+        {
+            var resp = new ResultModel();
+            if (this.Identity.IsAuthenticated == false)
+            {
+                resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
+                return this.Ok(resp);
+            }
+            var user = this.GetUserInfo();
+            var log = new ViewLog()
+            {
+                CourseSeq = entity.CourseSeq,
+                AppendixSeq = entity.AppendixSeq,
+                ViewStartTime = entity.ViewStartTime.ToLocalTime(),
+                ViewEndTime = DateTime.Now,
+                CreatDate = DateTime.Now,
+                CreatUser = user.UserSeq
+            };
+            context.ViewLogs.Add(log);
+            context.SaveChanges();
+            return this.Ok(resp);
+        }
+    }
+
+    /// <summary>
+    /// 設定觀看時間
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [HttpPost("ViewLog/{courseSeq}/{appendixSeq}")]
+    public IActionResult AddViewLog(int courseSeq, int appendixSeq)
+    {
+        using (var context = new DatabaseContext(this.configuration))
+        {
+            var resp = new ResultModel();
+            if (this.Identity.IsAuthenticated == false)
+            {
+                resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
+                return this.Ok(resp);
+            }
+            var user = this.GetUserInfo();
+            // 
+            var log = new ViewLog()
+            {
+                CourseSeq = courseSeq,
+                AppendixSeq = appendixSeq,
+                ViewStartTime = DateTime.Now,
+                ViewEndTime = new DateTime(2999, 12, 31),
+                CreatDate = DateTime.Now,
+                CreatUser = user.UserSeq
+            };
+            context.ViewLogs.Add(log);
+            var code = context.SaveChanges();
+            if (code <= 0)
+            {
+                resp = new ResultModel(ResultCode.Failed, "紀錄時間錯誤");
+            }
+            return this.Ok(resp);
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="courseSeq"></param>
+    /// <param name="appendixSeq"></param>
+    /// <returns></returns>
+    [HttpPut("ViewLog/{courseSeq}/{appendixSeq}")]
+    public IActionResult SetViewLog(int courseSeq, int appendixSeq)
+    {
+        using (var context = new DatabaseContext(this.configuration))
+        {
+            var resp = new ResultModel();
+            if (this.Identity.IsAuthenticated == false)
+            {
+                resp = new ResultModel(ResultCode.Failed, "驗證失敗, 請重新登入");
+                return this.Ok(resp);
+            }
+            var entAt = new DateTime(2999, 12, 31);
+            var q = from a in context.ViewLogs
+                    where a.CourseSeq == courseSeq &&
+                          a.AppendixSeq == appendixSeq &&
+                          a.ViewEndTime == entAt &&
+                          a.DeleteTag == 0
+                    select a;
+            if (q.Any())
+            {
+                var o = q.FirstOrDefault();
+                o.ViewEndTime = DateTime.Now;
+                context.ViewLogs.Update(o);
+                context.SaveChanges();
+            }
+            return this.Ok(resp);
+        }
+
+    }
+
+
 }

@@ -65,12 +65,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false,
 
         // 驗證 Token 的有效期間
-        ValidateLifetime = false,
+        ValidateLifetime = true,
 
         // 如果 Token 中包含 key 才需要驗證，一般都只有簽章而已
         ValidateIssuerSigningKey = false,
 
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signKey))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signKey)),
+        // 
+        //ClockSkew = TimeSpan.Zero
     };
 });
 

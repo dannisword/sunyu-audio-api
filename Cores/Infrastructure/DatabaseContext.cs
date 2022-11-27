@@ -16,6 +16,10 @@ namespace Sunyu.Audio.Cores.Infrastructure
         public DbSet<CoursePlayRecord> CoursePlayRecords { get; set; }
 
         public DbSet<ViewHistory> ViewHistories { get; set; }
+        
+        public DbSet<ViewLog> ViewLogs { get; set; }
+
+        public DbSet<CourseMap> CourseMaps { get; set; }
 
         public DatabaseContext(IConfiguration configuration) : base()
         {
@@ -36,12 +40,12 @@ namespace Sunyu.Audio.Cores.Infrastructure
             .HasForeignKey(p => p.CourseSeq)
             .HasConstraintName("course_appendix");
 
-/*
-            modelBuilder.Entity<CourseAppendix>()
-            .HasOne(p => p.History)
-            .WithOne(p => p.CourseAppendix)
-            .HasForeignKey<ViewHistory>(p => p.AppendixSeq);
-*/
+            /*
+                        modelBuilder.Entity<CourseAppendix>()
+                        .HasOne(p => p.History)
+                        .WithOne(p => p.CourseAppendix)
+                        .HasForeignKey<ViewHistory>(p => p.AppendixSeq);
+            */
             /*
                          modelBuilder.Entity<Course>()
                          .HasMany(x=> x.PlayRecords)

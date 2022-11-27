@@ -25,6 +25,11 @@ public class CourseAppendix : EntityBase
     //[ForeignKey("course")]
     public int CourseSeq { get; set; }
     /// <summary>
+    /// 課程類別
+    /// </summary>
+    /// <value></value>
+    public int Type { get; set; }
+    /// <summary>
     /// 課程Seq
     /// </summary>
     /// <value></value>

@@ -50,7 +50,7 @@ public class CourseServices : ICourseServices
         {
             var course = context.Courses?
             .Where(p => p.Seq == seq)
-            .Include(x => x.Appendiies)
+            .Include(x => x.Appendiies.Where(x => x.Type == 2))
             .FirstOrDefault();
 
             if (course != null)
@@ -93,14 +93,15 @@ public class CourseServices : ICourseServices
             var lastAt = DateTime.Now.AddMonths(-3).ToYYYYMMDD();
 
             var q = from a in db.Courses
-                    join b in db.CourseSignups on a.Seq equals b.CourseSeq
-                    where b.SignUpUser == user.UserSeq &&
+                    where a.OpenSignUp == 1 &&
                           a.CourseRelease == 1 &&
                           a.ReleaseDate != "" &&
                           a.ReleaseDate.CompareTo(lastAt) >= 0
                     orderby a.ReleaseDate descending
                     select a;
-            return q.Include(x => x.Appendiies).ToList();
+            return q.Include(x => x.Appendiies.Where(x => x.Type == 2))
+                    .Skip((currentPage - 1) * itemsPerPage)
+                    .Take(itemsPerPage).ToList();
         }
     }
     /// <summary>
@@ -160,6 +161,20 @@ public class CourseServices : ICourseServices
         using (var db = new DatabaseContext(this.config))
         {
             var q = from a in db.Courses
+                    where a.OpenSignUp == 1 &&
+                          a.CourseRelease == 1
+                    orderby a.ReleaseDate descending
+                    select a;
+
+            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+        }
+    }
+
+    public IEnumerable<dynamic> Self(UserInfo user, int currentPage, int itemsPerPage)
+    {
+        using (var db = new DatabaseContext(this.config))
+        {
+            var q = from a in db.Courses
                     join b in db.CourseSignups on a.Seq equals b.CourseSeq
                     where b.SignUpUser == user.UserSeq &&
                           a.CourseRelease == 1
@@ -168,6 +183,7 @@ public class CourseServices : ICourseServices
 
             return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
         }
+
     }
 
     public int Play(CoursePlayRecord record)

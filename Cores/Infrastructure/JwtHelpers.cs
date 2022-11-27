@@ -67,4 +67,35 @@ public class JwtHelpers
 
         return serializeToken;
     }
+
+
+    public SecurityToken GetExpiration(string token)
+    {
+        //https://stackoverflow.com/questions/62902754/how-to-extract-the-token-expiration-time-with-the-system-identitymodel-tokens-jw
+        var issuer = this.Configuration.GetValue<string>("JwtSettings:Issuer");
+        var signKey = this.Configuration.GetValue<string>("JwtSettings:SignKey");
+        SymmetricSecurityKey symmetricSecurityKey = GenerateSymmetricSecurityKey(signKey);
+
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = symmetricSecurityKey
+        };
+
+        tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
+
+
+        return validatedToken;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="base64Secret"></param>
+    /// <returns></returns>
+    private SymmetricSecurityKey GenerateSymmetricSecurityKey(string base64Secret)
+    {
+        byte[] symmetricKey = Convert.FromBase64String(base64Secret);
+        return new SymmetricSecurityKey(symmetricKey);
+    }
 }
