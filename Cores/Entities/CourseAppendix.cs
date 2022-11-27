@@ -59,6 +59,11 @@ public class CourseAppendix : EntityBase
     /// </summary>
     /// <value></value>
     public string Tag { get; set; }
+    /// <summary>
+    /// 影片期間
+    /// </summary>
+    /// <value></value>
+    public double Duration { get; set; }
 
     /// <summary>
     /// 刪除註記

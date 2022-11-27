@@ -57,7 +57,7 @@ public class Course : EntityBase
     /// 講師類型 1:內部 2:外部
     /// </summary>
     /// <value></value>
-    public int? LecturerType { get; set; }
+    public int LecturerType { get; set; }
     /// <summary>
     /// 內部講師Seq
     /// </summary>
@@ -163,4 +163,10 @@ public class Course : EntityBase
     /// <value></value>
     //[NotMapped]
     public ICollection<ViewHistory> ViewHistories { get; set; }
+    /// <summary>
+    /// 觀看比例
+    /// </summary>
+    /// <value></value>
+    [NotMapped]
+    public double Scale { get; set; }
 }

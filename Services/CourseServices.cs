@@ -181,7 +181,23 @@ public class CourseServices : ICourseServices
                     orderby a.ReleaseDate descending
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+            var source = q.Include(x => x.Appendiies)
+                          .Skip((currentPage - 1) * itemsPerPage)
+                          .Take(itemsPerPage).ToList();
+            // 計算比例
+            foreach (var item in source)
+            {
+                var duration = item.Appendiies.Sum(x => x.Duration);
+                var viewLastTime = db.ViewHistories.Where(x => x.CourseSeq == item.Seq &&
+                                                          x.UserSeq == user.UserSeq)
+                                                    .Sum(p => p.ViewLastTime);
+                if (duration > 0)
+                {
+                    item.Scale = viewLastTime / duration * 100;
+                }
+
+            }
+            return source;
         }
 
     }
@@ -292,7 +308,7 @@ public class CourseServices : ICourseServices
                 history.ModifyUser = user?.UserSeq;
                 history.ModifyDate = DateTime.Now;
                 history.ViewLastTime = entity.ViewLastTime;
-                context.ViewHistories?.Update(history);
+                context.ViewHistories.Update(history);
                 if (context.SaveChanges() > 0)
                 {
                     return history;
@@ -304,7 +320,7 @@ public class CourseServices : ICourseServices
                 entity.FristViewTime = DateTime.Now;
                 entity.CreatUser = user.UserSeq;
                 entity.CreatDate = DateTime.Now;
-                context.ViewHistories?.Add(entity);
+                context.ViewHistories.Add(entity);
                 if (context.SaveChanges() > 0)
                 {
                     return entity;
