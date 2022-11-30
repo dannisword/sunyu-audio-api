@@ -103,7 +103,7 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = route;
+    options.RoutePrefix = "document";//route;
 });
 
 app.UseCors();
@@ -121,5 +121,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseDefaultFiles();
+
+app.UseStaticFiles();
 
 app.Run();

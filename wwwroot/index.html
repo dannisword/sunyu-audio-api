@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./images/LOGO.png" type="image/ico" />
+    <link href="./assets/css/fontawesome.min.css" rel="stylesheet">
+    <!--icon font設定-->
+    <link href="./assets/css/all.css" rel="stylesheet">
+
+    <!--load all styles -->
+    <link href="./assets/css/layout.css" rel="stylesheet">
+    <link href="./assets/css/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/chosen.min.css">
+    <link rel="stylesheet" href="./assets/css/datatables.min.css">
+    <link href="./assets/doc.css" rel="stylesheet">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="./javascript/app.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header id="Header_front">
+            <nav class="navbar navbar-expand-sm navbar-light fixed-top">
+                <!-- Brand/logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="assets/LOGO_220308_cn.png" alt="logo">
+                </a>
+
+            </nav>
+        </header>
+
+        <div id="WRAPPER">
+            <div id="spinner-div" class="d-flex justify-content-center" v-if="loading">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+
+            <div class="section">
+                <div class="container">
+                    <!-- 最新上架 -->
+                    <h1>最新上架</h1>
+                    <div class="row my-4">
+                        <div class="col-12 col-sm-6 mb-4" v-for="item in last">
+                            <div class="btn-block btn-shadow" @click="onNav(item)">
+                                <div class="card">
+                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
+                                    <img class="lesson_pic_100" :src="item.src"> </img>
+
+                                    <div class="card-body">
+                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
+                                        <div class="teacher_info">
+                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            {{ item.authorName }}
+
+                                        </div>
+                                        <div class="price_info">
+                                            <p class="card-text">
+                                                <small class="text-muted line-through d-inline-block w-50">原價
+                                                    $4,200</small>
+                                                <span class="price d-inline-block">優惠價 $2,100</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 繼續看-->
+                    <h2>繼續看</h2>
+                    <div class="row my-4">
+                        <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in half">
+                            <div href="#" class="btn-block btn-shadow">
+                                <div class="card">
+                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
+                                    <img class="lesson_pic_100" :src="item.src"> </img>
+
+                                    <div class="card-body">
+                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
+                                        <div class="teacher_info">
+                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            {{ item.authorName }}
+
+                                        </div>
+                                        <div class="price_info">
+                                            <p class="card-text">
+                                                <small class="text-muted line-through d-inline-block w-50">原價
+                                                    $4,200</small>
+                                                <span class="price d-inline-block">優惠價 $2,100</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 全部課程-->
+                    <div class="form-inline section_title_left">
+                        <label class="my-1 mr-3">全部課程</label>
+                        <select class="form-control my-2">
+                            <option>全部</option>
+                            <option>類別1</option>
+                            <option>類別2</option>
+                        </select>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in mine">
+                            <div href="#" class="btn-block btn-shadow">
+                                <div class="card">
+                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
+                                    <img class="lesson_pic_100" :src="item.src"> </img>
+
+                                    <div class="card-body">
+                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
+                                        <div class="teacher_info">
+                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            {{ item.authorName }}
+
+                                        </div>
+                                        <div class="price_info">
+                                            <p class="card-text">
+                                                <small class="text-muted line-through d-inline-block w-50">原價
+                                                    $4,200</small>
+                                                <span class="price d-inline-block">優惠價 $2,100</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section bg-light">
+                <div class="container">
+                    <h3>講師陣容</h3>
+                    <div class="row my-4">
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4">
+                            <div class="text-center">
+                                <img src="assets/images/teacher01.png" alt="老師照片"
+                                    class="teacher_list_pic rounded-circle">
+                            </div>
+                            <div class="w-100">
+                                <p class="mt-2 mb-0 font-weight-bold">AutoMedia</p>
+                                <small>影片教材大師，擁有獨家專利AI智能配音技術，將簡報變成影片</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">提示訊息</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{message}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="inside_footer" id="Footer_front">
+
+            <div class="copyright copyright_color04">
+                © 2022 Sunyu Tech Inc. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    loading: false,
+                    message: "",
+                    params: {
+                        last: {
+                            currentPage: 1,
+                            itemsPerPage: 2,
+                        },
+                        half: {
+                            currentPage: 1,
+                            itemsPerPage: 3,
+                        },
+                        mine: {
+                            currentPage: 1,
+                            itemsPerPage: 6,
+                        },
+                    },
+                    last: [],
+                    half: [],
+                    mine: [],
+                    infoModal: {},
+                }
+            },
+            async created() {
+                const params = getUrlParam('token');
+                const isVerify = await this.verifyAccount(params);
+                console.log(isVerify)
+                if (isVerify == false) {
+                    getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
+                        if (resp.resultCode == 10) {
+                            setUserInfo(resp.content);
+                        }
+                    })
+                }
+                this.onLoad();
+            },
+            methods: {
+                async onLoad() {
+                    this.loading = true;
+                    let query = getUrlQuery(this.params.last);
+
+                    const last = await getLast(query);
+                    if (last.resultCode == 10) {
+                        this.last = last.content;
+                        for (let item of this.last) {
+                            item.src = `${item.courseImageType} ${item.courseImage}`;
+                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
+                        }
+                    }
+                    const half = await getHalf(query);
+                    if (half.resultCode == 10) {
+                        this.half = half.content;
+                        for (let item of this.half) {
+                            item.src = `${item.courseImageType} ${item.courseImage}`;
+                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
+                        }
+                    }
+
+                    const mine = await getHalf(query);
+                    if (mine.resultCode == 10) {
+                        this.mine = mine.content;
+                        for (let item of this.mine) {
+                            item.src = `${item.courseImageType} ${item.courseImage}`;
+                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
+                        }
+                    }
+                    this.loading = false;
+
+                },
+                onOpen() {
+                    var elm = document.getElementById('infoModal')
+                    showModal(elm);
+                },
+                async onNav(item) {
+                    var data = await getSignup(item.seq);
+                    if (data.resultCode != 10) {
+                        this.message = data.message;
+                        this.infoModal = bsModal('infoModal');
+                        this.infoModal.show();
+                        return;
+                    }
+                    window.location.href = `course.html?seq=${item.seq}`;
+                    console.log(data);
+
+                },
+                async verifyAccount(params) {
+                    const token = getToken();
+                    if (token == null) {
+                        return false;
+                    }
+                    const data = {
+                        token: token,
+                    };
+                    return await verifyToken(data);
+                },
+            }
+        })
+    </script>
+</body>
+
+
+</html>
