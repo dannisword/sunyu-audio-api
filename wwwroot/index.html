@@ -272,16 +272,20 @@
             },
             async created() {
                 const params = getUrlParam('token');
+                console.log(params);
                 const isVerify = await this.verifyAccount(params);
                 console.log(isVerify)
                 if (isVerify == false) {
                     getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
                         if (resp.resultCode == 10) {
                             setUserInfo(resp.content);
+                            this.onLoad();
                         }
                     })
+                } else {
+                    this.onLoad();
                 }
-                this.onLoad();
+
             },
             methods: {
                 async onLoad() {
