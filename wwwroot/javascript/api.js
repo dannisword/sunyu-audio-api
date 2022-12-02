@@ -84,3 +84,52 @@ export async function getMaps() {
   const url = `/v1/Course/Maps`;
   return await fetchGet(url);
 }
+
+/**
+ *
+ * @param {*} seq
+ * @returns
+ */
+ export async function getCourse(seq) {
+  const url = `/v1/Course/${seq}`;
+  return await fetchGet(url);
+}
+
+/**
+ *
+ * @param {*} courseSeq
+ * @param {*} appendixSeq
+ * @returns
+ */
+ export async function getViewHistory(courseSeq, appendixSeq) {
+  const url = `/v1/Course/ViewHistory/${courseSeq}/${appendixSeq}`;
+  return await fetchGet(url);
+}
+/**
+ * 觀看紀錄
+ * @param {*} data
+ * @returns
+ */
+ export async function setViewHistory(data) {
+  const url = `/v1/Course/ViewHistory`;
+  return await fetchPost(url, data);
+}
+/**
+ * 觀看紀錄-結束
+ * @param {*} seq
+ * @returns
+ */
+ export async function setViewHistoryEnd(seq) {
+  const url = `/v1/Course/ViewHistory/End/${seq}`;
+  return await fetchPost(url, data);
+}
+
+/**
+ * 
+ * @param {*} data 
+ * @returns 
+ */
+export async function addViewLog(data) {
+  const url = `/v1/ViewLog`;
+  return await fetchPost(url, data);
+}

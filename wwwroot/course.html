@@ -24,14 +24,17 @@
     <link rel="stylesheet" href="./assets/css/chosen.min.css">
     <link rel="stylesheet" href="./assets/css/datatables.min.css">
     <link href="./assets/doc.css" rel="stylesheet">
-
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+    <script src="./javascript/video.js"></script>
     <script src="./javascript/app.js"></script>
+    <script src="./pages/component.js"> </script>
 </head>
 
 <body>
@@ -42,10 +45,97 @@
                 <a class="navbar-brand" href="/">
                     <img src="assets/images/LOGO_220308_cn.png" alt="logo">
                 </a>
-
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                    <!-- Links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" @click="onNav('/')">所有課程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" @click="onNav('myClass.html')">我的課程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">登出</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </header>
         <div id="WRAPPER">
+            <!-- banner -->
+            <banner :source="banner_map"></banner>
+
+            <div class="section videoArea_bg">
+                <div class="container">
+                    <h1 class="section_title_center text-white"> {{ course.courseName }}</h1>
+                    <div class="row my-4 px-2 py-4 bg-w-80 rounded">
+                        <div class="col-12 col-md-9">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="video01" role="tabpanel"
+                                    aria-labelledby="video01-tab">
+                                    <div class="videobox">
+                                        <div>
+                                            <video
+                                                src="http://demo.sunyu-tech.com.tw/TTQS/coursefile/20221102203407_1_創業團隊之專案管理實務分享_影音-1.pptx.mp4"
+                                                width="600" controls>
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mt-2 mt-md-0">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
+                                <a class="nav-link btn-light active" id="video01-tab" data-toggle="pill"
+                                    data-target="#video01" type="button" role="tab" aria-controls="video01"
+                                    aria-selected="true" v-for="item in course.appendiies">
+                                    {{ item.unit }}
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section bg-white">
+                <div class="container">
+                    <div class="row my-4">
+                        <div class="col-12 col-md-8 mb-4">
+                            <div class="notes px-2">
+                                <h3>本集重點</h3>
+                                <span v-html="course.courseMemo"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded">
+                                <div class="p-4 teacher_personal_bg">
+                                    <div class="text-center">
+                                        <img src="assets/images/teacher01.png" alt="老師照片"
+                                            class="teacher_personal_pic rounded-circle">
+                                        <p class="teacher_name">{{course.authorName}}</p>
+                                       
+                                    </div>
+                                </div>
+                                <div class="w-100 p-4">
+                                    <p class="mt-2 mb-0 font-weight-bold">關於我</p>
+                                    <span v-html="course.authorMemo"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
 
         <footer class="inside_footer" id="Footer_front">
@@ -54,18 +144,197 @@
             </div>
         </footer>
     </div>
-    <script>
+
+    <!-- template -->
+    <script type="text/x-template" id="my-banner">
+        <div id="carousel01" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ul class="carousel-indicators">
+                <li data-target="#carousel01" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel01" data-slide-to="1"></li>
+                <li data-target="#carousel01" data-slide-to="2"></li>
+            </ul>
+            <!-- The slideshow -->
+            <div class="carousel-inner">
+                <a class="carousel-item slide01 active"></a>
+                <a class="carousel-item slide01"></a>
+                <a class="carousel-item slide01"></a>
+            </div>
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" data-slide="prev" v-on:click="onClick">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </script>
+    <script type="text/x-template" id="video-player">
+        <template>
+            <video ref="videoPlayer" class="video-js vjs-big-play-centered"></video>
+        </template>
+    </script>
+    <script type="module">
+        //const player = videojs('video');
+        import {
+            getCourse,
+            setViewHistory,
+            getViewHistory,
+            setViewHistoryEnd,
+            addViewLog,
+            getMaps,
+        } from './javascript/api.js'
+
         var app = new Vue({
             el: '#app',
             data() {
                 return {
-                    name: "111"
+                    loading: false,
+                    seq: 0,
+                    course: {},
+                    appendix: {},
+                    viewHistory: {},
+                    startTime: "",
+                    banner_map: [],
+                    videoPath: "",
+                    videoOptions: {
+                        autoplay: false,
+                        controls: true,
+                        fluid: true,
+                        sources: [
+                            {
+                                src: "",
+                                type: "video/mp4",
+                            },
+                        ],
+                    },
                 }
             },
             created() {
-                const params = getUrlParam('seq');
-                console.log(params)
-            }
+                this.startTime = moment();
+                this.seq = getUrlParam('seq');
+                getMaps().then((resp) => {
+                    this.banner_map = resp;
+                    for (let item of this.banner_map) {
+                        item.imgSrc = `data:image/png;base64, ${item.image}`;
+                    }
+                });
+                const videoOptions = {
+                    autoplay: false,
+                    controls: true,
+                    fluid: true,
+                    sources: [
+                        {
+                            src: "http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4",
+                            type: "video/mp4",
+                        },
+                    ],
+                }
+                /*
+                                const player = videojs(
+                                    this.$refs.video,
+                                    videoOptions,
+                                    function onPlayerReady() {
+                                        console.log("onPlayerReady", this);
+                                    }
+                                );*/
+                //console.log(player);
+
+                this.onLoad();
+            },
+            computed: {
+                video() {
+                    return this.$refs.video;
+                },
+            },
+            watch: {
+                appendix(newVal, oldVal) {
+                    if (oldVal.seq != undefined) {
+                        this.save(oldVal, this.video);
+                    }
+                    this.setCurrentTime();
+                },
+            },
+            methods: {
+                onLoad: async function () {
+                    this.loading = true;
+                    getCourse(this.seq)
+                        .then((resp) => {
+                            console.log(resp);
+                            this.course = resp;
+                            this.appendix = this.course.appendiies[0];
+                            this.course.teacherUrl = `${this.course.authorImageType} ${this.course.authorImage}`;
+
+                            this.loading = false;
+                        })
+                        .catch((e) => {
+                            this.loading = false;
+                        });
+                },
+                onChang: async function (val) {
+                    // 觀看紀錄
+                    this.loading = true;
+                    this.video.pause();
+                    this.appendix = val;
+                    setTimeout(() => {
+                        this.loading = false;
+                    }, 500);
+                },
+                onAction(val) {
+                    setViewHistoryEnd(this.viewHistory.seq).then((resp) => { });
+                    // 結束
+                },
+                onNav(page) {
+                    window.location.href = page;
+                },
+                setCurrentTime: function () {
+                    this.videoPath = `http://demo.sunyu-tech.com.tw/TTQS${this.appendix.filePath}${this.appendix.fileName}`;
+                    console.log(this.videoPath)
+
+                    // 紀錄
+                    this.$nextTick(async () => {
+                        var resp = await getViewHistory(
+                            this.appendix.courseSeq,
+                            this.appendix.seq
+                        );
+                        console.log(this.$refs.video)
+                        //console.log(this.videoPath)
+                        if (this.video == null) {
+                            return;
+                        }
+                        this.viewHistory = resp;
+
+                        this.video.src(this.videoPath);
+                        this.video.currentTime(resp.viewLastTime);
+
+                        // 還沒紀錄
+                        if (this.viewHistory.seq == 0) {
+                            this.save(this.appendix, this.video);
+                        }
+                    });
+                },
+                save(appendix, video) {
+                    const data = {
+                        seq: 0,
+                        courseSeq: appendix.courseSeq,
+                        appendixSeq: appendix.seq,
+                        viewLastTime: video.currentTime(),
+                        //viewDuration: video.duration(),
+                        deleteTag: 0,
+                    };
+                    setViewHistory(data).then((resp) => { });
+                },
+
+            },
+            async beforeDestroy() {
+                await this.save(this.appendix, this.video);
+                var data = {
+                    courseSeq: this.course.seq,
+                    appendixSeq: this.appendix.seq,
+                    viewStartTime: this.startTime,
+                };
+                await addViewLog(data);
+            },
         });
     </script>
 </body>

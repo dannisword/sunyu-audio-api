@@ -46,11 +46,30 @@
                 <a class="navbar-brand" href="#">
                     <img src="assets/images/LOGO_220308_cn.png" alt="logo">
                 </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                    <!-- Links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" @click="onNav('/')">所有課程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" @click="onNav('myClass.html')">我的課程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">登出</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </header>
 
         <div id="WRAPPER">
+            <!-- banner -->
             <banner :source="banner_map"></banner>
+            <!-- -->
             <div id="spinner-div" class="d-flex justify-content-center" v-if="loading">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -63,7 +82,7 @@
                     <h1>最新上架</h1>
                     <div class="row my-4">
                         <div class="col-12 col-sm-6 mb-4" v-for="item in last">
-                            <div class="btn-block btn-shadow" @click="onNav(item)">
+                            <div class="btn-block btn-shadow" @click="onNavCourse(item)">
                                 <div class="card">
                                     <img src="assets/images/lesson01_bg.png" class="card-img-top">
                                     <img class="lesson_pic_100" :src="item.src"> </img>
@@ -264,7 +283,6 @@
             getMaps,
         } from './javascript/api.js'
 
-
         var vm = new Vue({
             el: '#app',
             data() {
@@ -293,9 +311,18 @@
                 }
             },
             async created() {
+                getMaps().then((resp) => {
+                    console.log(resp)
+                    this.banner_map = resp;
+                    for (let item of this.banner_map) {
+                        item.imgSrc = `data:image/png;base64, ${item.image}`;
+                    }
+                });
+
                 const params = getUrlParam('token');
                 const isVerify = await this.verifyAccount(params);
                 console.log(isVerify)
+
                 if (isVerify == false) {
                     getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
                         if (resp.resultCode == 10) {
@@ -312,13 +339,7 @@
                 async onLoad() {
                     this.loading = true;
                     let query = getUrlQuery(this.params.last);
-                    getMaps().then((resp) => {
-                        console.log(resp)
-                        this.banner_map = resp;
-                        for (let item of this.banner_map) {
-                            item.imgSrc = `data:image/png;base64, ${item.image}`;
-                        }
-                    });
+
 
                     const last = await getLast(query);
                     if (last.resultCode == 10) {
@@ -352,7 +373,10 @@
                     var elm = document.getElementById('infoModal')
                     showModal(elm);
                 },
-                async onNav(item) {
+                onNav(page) {
+                    window.location.href = page;
+                },
+                async onNavCourse(item) {
                     var data = await getSignup(item.seq);
                     if (data.resultCode != 10) {
                         this.message = data.message;
@@ -361,8 +385,6 @@
                         return;
                     }
                     window.location.href = `course.html?seq=${item.seq}`;
-                    console.log(data);
-
                 },
                 async verifyAccount(params) {
                     const token = getToken();

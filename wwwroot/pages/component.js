@@ -7,7 +7,7 @@ Vue.component("banner", {
     };
   },
   created: function () {
-    //console.log(this.source);
+    console.log(this.source);
   },
   methods: {
     onClick(val) {
