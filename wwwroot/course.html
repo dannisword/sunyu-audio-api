@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title></title>
+    <title>影片播放</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -13,7 +13,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <link rel="icon" href="./images/LOGO.png" type="image/ico" />
+    <link rel="icon" href="./assets/images/LOGO.png" type="image/ico" />
     <link href="./assets/css/fontawesome.min.css" rel="stylesheet">
     <!--icon font設定-->
     <link href="./assets/css/all.css" rel="stylesheet">
@@ -77,12 +77,8 @@
                                 <div class="tab-pane fade show active" id="video01" role="tabpanel"
                                     aria-labelledby="video01-tab">
                                     <div class="videobox">
-                                        <div>
-                                            <video
-                                                src="http://demo.sunyu-tech.com.tw/TTQS/coursefile/20221102203407_1_創業團隊之專案管理實務分享_影音-1.pptx.mp4"
-                                                width="600" controls>
-                                            </video>
-                                        </div>
+                                        <video id="video" ref="video" class="video-js vjs-big-play-centered" controls
+                                            fluid :src="videoPath" width="1024"></video>
                                     </div>
                                 </div>
 
@@ -94,7 +90,7 @@
                                 aria-orientation="vertical">
                                 <a class="nav-link btn-light active" id="video01-tab" data-toggle="pill"
                                     data-target="#video01" type="button" role="tab" aria-controls="video01"
-                                    aria-selected="true" v-for="item in course.appendiies">
+                                    aria-selected="true" v-for="item in course.appendiies" @click="onChang(item)">
                                     {{ item.unit }}
                                 </a>
 
@@ -121,7 +117,7 @@
                                         <img src="assets/images/teacher01.png" alt="老師照片"
                                             class="teacher_personal_pic rounded-circle">
                                         <p class="teacher_name">{{course.authorName}}</p>
-                                       
+
                                     </div>
                                 </div>
                                 <div class="w-100 p-4">
@@ -175,7 +171,7 @@
         </template>
     </script>
     <script type="module">
-        //const player = videojs('video');
+
         import {
             getCourse,
             setViewHistory,
@@ -197,17 +193,6 @@
                     startTime: "",
                     banner_map: [],
                     videoPath: "",
-                    videoOptions: {
-                        autoplay: false,
-                        controls: true,
-                        fluid: true,
-                        sources: [
-                            {
-                                src: "",
-                                type: "video/mp4",
-                            },
-                        ],
-                    },
                 }
             },
             created() {
@@ -219,27 +204,6 @@
                         item.imgSrc = `data:image/png;base64, ${item.image}`;
                     }
                 });
-                const videoOptions = {
-                    autoplay: false,
-                    controls: true,
-                    fluid: true,
-                    sources: [
-                        {
-                            src: "http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4",
-                            type: "video/mp4",
-                        },
-                    ],
-                }
-                /*
-                                const player = videojs(
-                                    this.$refs.video,
-                                    videoOptions,
-                                    function onPlayerReady() {
-                                        console.log("onPlayerReady", this);
-                                    }
-                                );*/
-                //console.log(player);
-
                 this.onLoad();
             },
             computed: {
@@ -252,7 +216,7 @@
                     if (oldVal.seq != undefined) {
                         this.save(oldVal, this.video);
                     }
-                    this.setCurrentTime();
+                    this.play(newVal);
                 },
             },
             methods: {
@@ -264,15 +228,20 @@
                             this.course = resp;
                             this.appendix = this.course.appendiies[0];
                             this.course.teacherUrl = `${this.course.authorImageType} ${this.course.authorImage}`;
-
                             this.loading = false;
                         })
                         .catch((e) => {
                             this.loading = false;
                         });
                 },
+                onChange(val) {
+                    //this.appendix = val;
+                    this.video.pause();
+                    this.videoPath = `http://demo.sunyu-tech.com.tw/TTQS${val.filePath}${val.fileName}`;
+                    this.video.load();
+                },
                 onChang: async function (val) {
-                    // 觀看紀錄
+                    // 觀看紀錄 this.video.load();
                     this.loading = true;
                     this.video.pause();
                     this.appendix = val;
@@ -282,35 +251,22 @@
                 },
                 onAction(val) {
                     setViewHistoryEnd(this.viewHistory.seq).then((resp) => { });
-                    // 結束
                 },
                 onNav(page) {
                     window.location.href = page;
                 },
-                setCurrentTime: function () {
-                    this.videoPath = `http://demo.sunyu-tech.com.tw/TTQS${this.appendix.filePath}${this.appendix.fileName}`;
-                    console.log(this.videoPath)
-
-                    // 紀錄
-                    this.$nextTick(async () => {
-                        var resp = await getViewHistory(
-                            this.appendix.courseSeq,
-                            this.appendix.seq
-                        );
-                        console.log(this.$refs.video)
-                        //console.log(this.videoPath)
-                        if (this.video == null) {
-                            return;
-                        }
-                        this.viewHistory = resp;
-
-                        this.video.src(this.videoPath);
-                        this.video.currentTime(resp.viewLastTime);
-
-                        // 還沒紀錄
-                        if (this.viewHistory.seq == 0) {
-                            this.save(this.appendix, this.video);
-                        }
+                play(appendix) {
+                    if (this.video == null) {
+                        return;
+                    }
+                    getViewHistory(
+                        appendix.courseSeq,
+                        appendix.seq
+                    ).then(resp => {
+                        this.videoPath = `http://demo.sunyu-tech.com.tw/TTQS${appendix.filePath}${appendix.fileName}`;
+                        this.$nextTick(async () => {
+                            this.video.currentTime = resp.viewLastTime;
+                        });
                     });
                 },
                 save(appendix, video) {
@@ -318,11 +274,13 @@
                         seq: 0,
                         courseSeq: appendix.courseSeq,
                         appendixSeq: appendix.seq,
-                        viewLastTime: video.currentTime(),
-                        //viewDuration: video.duration(),
+                        viewLastTime: video.currentTime,
                         deleteTag: 0,
                     };
-                    setViewHistory(data).then((resp) => { });
+                    console.log(data);
+                    setViewHistory(data).then((resp) => { 
+                        console.log(resp);
+                    });
                 },
 
             },
@@ -337,6 +295,12 @@
             },
         });
     </script>
+    <style scoped>
+        .video-js {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </body>
 
 </html>
