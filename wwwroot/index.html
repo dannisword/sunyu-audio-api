@@ -53,7 +53,7 @@
                     <!-- Links -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" @click="onNav('/')">所有課程</a>
+                            <a class="nav-link" @click="onNav('index.html')">所有課程</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" @click="onNav('myClass.html')">我的課程</a>
@@ -311,29 +311,27 @@
                 }
             },
             async created() {
+                // banner 
                 getMaps().then((resp) => {
-                    console.log(resp)
                     this.banner_map = resp;
                     for (let item of this.banner_map) {
                         item.imgSrc = `data:image/png;base64, ${item.image}`;
                     }
                 });
 
-                const params = getUrlParam('token');
-                const isVerify = await this.verifyAccount(params);
-                console.log(isVerify)
-
-                if (isVerify == false) {
-                    getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
-                        if (resp.resultCode == 10) {
-                            setUserInfo(resp.content);
-                            this.onLoad();
-                        }
-                    })
-                } else {
-                    this.onLoad();
-                }
-
+                this.verifyAccount().then(resp => {
+                    if (resp == false) {
+                        // 
+                        getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
+                            if (resp.resultCode == 10) {
+                                setUserInfo(resp.content);
+                                this.onLoad();
+                            }
+                        })
+                    } else {
+                        this.onLoad();
+                    }
+                });
             },
             methods: {
                 async onLoad() {
@@ -386,14 +384,17 @@
                     }
                     window.location.href = `course.html?seq=${item.seq}`;
                 },
-                async verifyAccount(params) {
-                    const token = getToken();
+                async verifyAccount() {
+                    let token = getUrlParam('token');
+                    // 空值確認本機端
                     if (token == null) {
-                        return false;
+                        token = getToken();
                     }
+                    console.log(token);
                     const data = {
                         token: token,
                     };
+                    // 驗證 token 
                     return await verifyToken(data);
                 },
             }

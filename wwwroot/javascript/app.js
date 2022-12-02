@@ -170,9 +170,3 @@ function clearAll() {
 function getToken() {
   return localStorage.getItem("token");
 }
-
-
-
-
-
-

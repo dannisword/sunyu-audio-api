@@ -97,14 +97,14 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = "document";//route;
+    });
 }
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "document";//route;
-});
+
 
 app.UseCors();
 app.UseCors(builder =>
@@ -122,7 +122,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseDefaultFiles();
+app.UsePathBase(new PathString("/Audio"));
+
+//app.UseDefaultFiles();
 
 app.UseStaticFiles();
 
