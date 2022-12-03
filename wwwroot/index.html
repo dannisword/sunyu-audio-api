@@ -273,6 +273,7 @@
     <script type="module">
         import { unit } from './javascript/unit.js'
         import {
+            verifyExpiration,
             verifyToken,
             getVerifyToken,
             getLast,
@@ -318,26 +319,33 @@
                         item.imgSrc = `data:image/png;base64, ${item.image}`;
                     }
                 });
-
-                this.verifyAccount().then(resp => {
-                    if (resp == false) {
-                        // 
-                        getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
-                            if (resp.resultCode == 10) {
-                                setUserInfo(resp.content);
-                                this.onLoad();
-                            }
-                        })
-                    } else {
-                        this.onLoad();
-                    }
-                });
+                let token = getUrlParam('token');
+                console.log(token);
+                if (token == null) {
+                    token = getToken();
+                }
+                if (token == null) {
+                    this.message = "帳號驗證錯誤，請重新登入";
+                    this.infoModal = bsModal('infoModal');
+                    this.infoModal.show();
+                }
+                this.verifyToken(token);
+                /*
+                                this.verifyAccount(token).then(resp => {
+                                    if (resp == false) {
+                                        getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
+                                            if (resp.resultCode == 10) {
+                                                setUserInfo(resp.content);
+                                                this.onLoad();
+                                            }
+                                        })
+                                    }
+                                });*/
             },
             methods: {
                 async onLoad() {
                     this.loading = true;
                     let query = getUrlQuery(this.params.last);
-
 
                     const last = await getLast(query);
                     if (last.resultCode == 10) {
@@ -384,18 +392,39 @@
                     }
                     window.location.href = `course.html?seq=${item.seq}`;
                 },
-                async verifyAccount() {
-                    let token = getUrlParam('token');
-                    // 空值確認本機端
+                verifyToken(token) {
+                    const data = {
+                        token: token,
+                    };
+                    // 驗證Token
+                    verifyToken(data).then(resp => {
+                        if (resp.resultCode == 10) {
+                            // 驗證時間
+                            const expAt = moment(resp.content.expiration);
+                            const nowAt = moment();
+                            // 大於現在時間 
+                            const isVerify = nowAt.diff(expAt, "minutes") > 0 ? false : true;
+                            setUserInfo(resp.content);
+                            this.onLoad();
+
+                        } else {
+                            this.message = "帳號驗證錯誤，請重新登入";
+                            this.infoModal = bsModal('infoModal');
+                            this.infoModal.show();
+                        }
+                    })
+                },
+                async verifyAccount(token) {
                     if (token == null) {
-                        token = getToken();
+                        // token = getToken();
+                        return false;
                     }
-                    console.log(token);
                     const data = {
                         token: token,
                     };
                     // 驗證 token 
-                    return await verifyToken(data);
+                    const resp = await verifyExpiration(data);
+                    return resp;
                 },
             }
         })

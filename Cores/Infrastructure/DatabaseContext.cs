@@ -16,14 +16,20 @@ namespace Sunyu.Audio.Cores.Infrastructure
         public DbSet<CoursePlayRecord> CoursePlayRecords { get; set; }
 
         public DbSet<ViewHistory> ViewHistories { get; set; }
-        
+
         public DbSet<ViewLog> ViewLogs { get; set; }
 
         public DbSet<CourseMap> CourseMaps { get; set; }
 
+        public DbSet<Company> Companies { get; set; }
+
         public DatabaseContext(IConfiguration configuration) : base()
         {
             this.connectString = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
+        }
+        public DatabaseContext(IConfiguration configuration, string name) : base()
+        {
+            this.connectString = configuration.GetSection("ConnectionStrings")[name];
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
