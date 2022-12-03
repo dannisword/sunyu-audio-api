@@ -42,16 +42,38 @@
     <!-- app -->
     <div id="app">
         <header id="Header_front">
-            <nav class="navbar navbar-expand-sm navbar-light fixed-top">
+            <div class="nav">
+                <input type="checkbox" id="nav-check">
+                <div class="nav-header">
+                    <div class="nav-title navbar-brand">
+                        <img src="assets/images/LOGO_220308_cn.png" alt="logo">
+                    </div>
+                </div>
+                <div class="nav-btn">
+                    <label for="nav-check">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                </div>
+            
+                <div class="nav-links">
+                    <p class="user-info">xxxx, 您好</p>
+                    <a @click="onNav('index.html')">所有課程</a>
+                    <a @click="onNav('myClass.html')">我的課程</a>
+                    <a>登出</a>
+                </div>
+            </div>
+            <!-- <nav class="navbar navbar-expand-sm navbar-light fixed-top">
                 <a class="navbar-brand" href="#">
                     <img src="assets/images/LOGO_220308_cn.png" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar"> 
                     <!-- Links -->
-                    <ul class="navbar-nav">
+                    <!-- <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" @click="onNav('index.html')">所有課程</a>
                         </li>
@@ -62,8 +84,9 @@
                             <a class="nav-link" href="#">登出</a>
                         </li>
                     </ul>
-                </div>
-            </nav>
+                </div> 
+            </nav>  -->
+            
         </header>
 
         <div id="WRAPPER">
@@ -308,7 +331,7 @@
                     last: [],
                     half: [],
                     mine: [],
-                    infoModal: {},
+                    infoModal: {}
                 }
             },
             async created() {
@@ -332,7 +355,8 @@
                 this.verifyToken(token);
                 /*
                                 this.verifyAccount(token).then(resp => {
-                                    if (resp == false) {
+                                    console.log('verifyAccount', resp);
+                    if (resp == false) {
                                         getVerifyToken("anita", "827ccb0eea8a706c4c34a16891f84e7b").then(resp => {
                                             if (resp.resultCode == 10) {
                                                 setUserInfo(resp.content);

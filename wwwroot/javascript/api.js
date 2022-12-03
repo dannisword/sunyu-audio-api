@@ -6,7 +6,8 @@
 export function verifyExpiration(data) {
   return new Promise((resolve, reject) => {
     const url = `/v1/Verify/Token`;
-    fetchPost(url, data).then((resp) => {
+      fetchPost(url, data).then((resp) => {
+          console.log('====>resp', resp);
       if (resp.resultCode == 10) {
         const expAt = moment(resp.content.expiration);
         const nowAt = moment();

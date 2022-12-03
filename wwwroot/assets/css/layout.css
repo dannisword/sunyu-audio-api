@@ -1192,3 +1192,124 @@ h1.section_title_center {
 .progress{
     height: 5px;
 }
+
+
+.nav {
+    width: 100%;
+    background-color: #ffffff;
+    position: fixed;
+    z-index: 1;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+.nav>.nav-header {
+    display: inline;
+}
+
+.nav>.nav-header>.nav-title {
+    display: inline-block;
+}
+.nav>.nav-header>.nav-title img{
+   max-width: 120px;
+    height: 32px;
+}
+
+.nav>.nav-btn {
+    display: none;
+}
+
+.nav>.nav-links {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    padding: 10px 0.8rem;
+}
+
+.nav>.nav-links>a {
+    display: inline-block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #0e0e0e;
+}
+
+.nav>.nav-links>a:hover {
+    color: #0d418d;
+}
+
+.nav>#nav-check {
+    display: none;
+}
+.nav-links>.user-info {
+    border-right: 2px solid #f0f0f0;
+    color: #0d418d;
+    margin: 0 3px 0 0;
+    padding: 0 5px 0 0;
+}
+
+@media (max-width:768px) {
+    .nav {
+        height: 50px;
+    }
+    .nav-links>.user-info {
+        padding: 10px;
+        border-bottom: 1px solid #f0f0f0;
+        border-right: 0;
+    }
+    .nav>.nav-btn {
+        display: inline-block;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+    }
+
+    .nav>.nav-btn>label {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        padding: 13px;
+    }
+
+    .nav>.nav-btn>label:hover,
+    .nav #nav-check:checked~.nav-btn>label {
+        background-color: rgb(0 0 0 / 6%);
+    }
+
+    .nav>.nav-btn>label>span {
+        display: block;
+        width: 25px;
+        height: 10px;
+        border-top: 2px solid #0d418d;
+    }
+
+    .nav>.nav-links {
+        position: absolute;
+        display: block;
+        width: 50%;
+        background-color: #fff;
+        height: 0px;
+        transition: all 0.3s ease-in;
+        overflow-y: hidden;
+        top: 50px;
+        right: 0px;
+    }
+
+    .nav>.nav-links>a {
+        display: block;
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .nav>#nav-check:not(:checked)~.nav-links {
+        height: 0px;
+        display: none;
+    }
+
+    .nav>#nav-check:checked~.nav-links {
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+        z-index: 99999;
+    }
+}
