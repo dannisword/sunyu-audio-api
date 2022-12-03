@@ -1,4 +1,3 @@
-//指派參加課程
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

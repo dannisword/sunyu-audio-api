@@ -1,9 +1,9 @@
 /**
- *
+ * 驗證時效
  * @param {*} data
  * @returns
  */
-export function verifyToken(data) {
+export function verifyExpiration(data) {
   return new Promise((resolve, reject) => {
     const url = `/v1/Verify/Token`;
     fetchPost(url, data).then((resp) => {
@@ -16,9 +16,18 @@ export function verifyToken(data) {
         }
         resolve(isVerify);
       }
-      reject(false);
+      resolve(false);
     });
   });
+}
+/**
+ * 驗證資料
+ * @param {*} data 
+ * @returns 
+ */
+export async function verifyToken(data) {
+  const url = `/v1/Verify/Token`;
+  return await fetchPost(url, data);
 }
 /**
  *
@@ -90,7 +99,7 @@ export async function getMaps() {
  * @param {*} seq
  * @returns
  */
- export async function getCourse(seq) {
+export async function getCourse(seq) {
   const url = `/v1/Course/${seq}`;
   return await fetchGet(url);
 }
@@ -101,7 +110,7 @@ export async function getMaps() {
  * @param {*} appendixSeq
  * @returns
  */
- export async function getViewHistory(courseSeq, appendixSeq) {
+export async function getViewHistory(courseSeq, appendixSeq) {
   const url = `/v1/Course/ViewHistory/${courseSeq}/${appendixSeq}`;
   return await fetchGet(url);
 }
@@ -110,7 +119,7 @@ export async function getMaps() {
  * @param {*} data
  * @returns
  */
- export async function setViewHistory(data) {
+export async function setViewHistory(data) {
   const url = `/v1/Course/ViewHistory`;
   return await fetchPost(url, data);
 }
@@ -119,15 +128,15 @@ export async function getMaps() {
  * @param {*} seq
  * @returns
  */
- export async function setViewHistoryEnd(seq) {
+export async function setViewHistoryEnd(seq) {
   const url = `/v1/Course/ViewHistory/End/${seq}`;
   return await fetchPost(url, data);
 }
 
 /**
- * 
- * @param {*} data 
- * @returns 
+ *
+ * @param {*} data
+ * @returns
  */
 export async function addViewLog(data) {
   const url = `/v1/ViewLog`;

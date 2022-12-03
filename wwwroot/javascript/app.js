@@ -80,7 +80,6 @@ function fetchGet(uri) {
   // middle url
   return new Promise((resolve, reject) => {
     const url = getAPIUrl();
-    console.log(url);
     fetch(`${url}${uri}`, {
       method: "GET",
       headers: getHeader(),
