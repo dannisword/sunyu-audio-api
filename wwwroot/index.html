@@ -56,7 +56,7 @@
                         <span></span>
                     </label>
                 </div>
-            
+
                 <div class="nav-links">
                     <p class="user-info">xxxx, 您好</p>
                     <a @click="onNav('index.html')">所有課程</a>
@@ -64,29 +64,7 @@
                     <a>登出</a>
                 </div>
             </div>
-            <!-- <nav class="navbar navbar-expand-sm navbar-light fixed-top">
-                <a class="navbar-brand" href="#">
-                    <img src="assets/images/LOGO_220308_cn.png" alt="logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar"> 
-                    <!-- Links -->
-                    <!-- <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" @click="onNav('index.html')">所有課程</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" @click="onNav('myClass.html')">我的課程</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">登出</a>
-                        </li>
-                    </ul>
-                </div> 
-            </nav>  -->
-            
+
         </header>
 
         <div id="WRAPPER">
@@ -268,28 +246,40 @@
         </footer>
 
     </div>
+    
     <!-- template -->
     <script type="text/x-template" id="my-banner">
-        <div id="carousel01" class="carousel slide" data-ride="carousel">
+        <div id="carousel01" class="carousel slide carousel-fade" data-ride="carousel"  data-bs-ride="false" v-for="item in banner_map">
             <!-- Indicators -->
-            <ul class="carousel-indicators">
-                <li data-target="#carousel01" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel01" data-slide-to="1"></li>
-                <li data-target="#carousel01" data-slide-to="2"></li>
-            </ul>
+             <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+            </div>
             <!-- The slideshow -->
             <div class="carousel-inner">
-                <a class="carousel-item slide01 active"></a>
-                <a class="carousel-item slide01"></a>
-                <a class="carousel-item slide01"></a>
+                <!-- 我想用 div style background 的方式做 -->
+                <div class="carousel-item active slide01" v-bind:style="{ 'background-image': 'url(' + item.imgSrc + ')' }">
+                </div>
+                <!-- <div class="carousel-item slide01 active" style="background-image:url('./assets/images/slide01.png')">
+                </div>
+                <div class="carousel-item slide01" style="background-image:url('https://cdn.vuetifyjs.com/images/carousel/bird.jpg')">
+                </div>
+                <div class="carousel-item slide01" style="background-image:url('https://cdn.vuetifyjs.com/images/carousel/sky.jpg')">
+                </div> -->
             </div>
             <!-- Left and right controls -->
-            <a class="carousel-control-prev" data-slide="prev" v-on:click="onClick">
-                <span class="carousel-control-prev-icon"></span>
-            </a>
-            <a class="carousel-control-next" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </a>
+             <button class="carousel-control-prev" type="button" data-bs-target="#carousel01" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel01" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
       </div>
     </script>
     <!-- script -->
@@ -338,6 +328,7 @@
                 // banner 
                 getMaps().then((resp) => {
                     this.banner_map = resp;
+                    console.log('====> this.banner_ma',  this.banner_map);
                     for (let item of this.banner_map) {
                         item.imgSrc = `data:image/png;base64, ${item.image}`;
                     }

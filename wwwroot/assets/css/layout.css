@@ -457,7 +457,10 @@ a.header {
 
 .slide01 {
     background: url('../images/slide01.png') no-repeat center;
+    background-position: center, center;
+    background-repeat: no-repeat;
     background-size: cover;
+    display: block;
 }
 
 /* ---------目前位置-------- */
@@ -1198,7 +1201,7 @@ h1.section_title_center {
     width: 100%;
     background-color: #ffffff;
     position: fixed;
-    z-index: 1;
+    z-index: 1440;
     border-bottom: 1px solid #e8e8e8;
     display: flex;
     align-items: center;
@@ -1230,7 +1233,7 @@ h1.section_title_center {
 
 .nav>.nav-links>a {
     display: inline-block;
-    padding: 10px 0;
+    padding: 10px;
     text-decoration: none;
     color: #0e0e0e;
 }
@@ -1254,7 +1257,7 @@ h1.section_title_center {
         height: 50px;
     }
     .nav-links>.user-info {
-        padding: 10px;
+        padding: 10px 0;
         border-bottom: 1px solid #f0f0f0;
         border-right: 0;
     }
