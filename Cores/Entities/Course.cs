@@ -178,7 +178,7 @@ public class Course : EntityBase
     {
         get
         {
-            return $"{this.CourseImageType} ${this.CourseImage}";
+            return $"{this.CourseImageType} {this.CourseImage}";
         }
     }
     /// <summary>
@@ -190,7 +190,7 @@ public class Course : EntityBase
     {
         get
         {
-            return $"{this.AuthorImageType} ${this.AuthorImage}";
+            return $"{this.AuthorImageType} {this.AuthorImage}";
         }
     }
 }
