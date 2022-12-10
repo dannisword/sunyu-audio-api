@@ -3,7 +3,7 @@
  * @param {*} contentType
  * @returns
  */
-const isDevelopment = false;
+const isDevelopment = true;
 
 /**
  * 取得 UrlParams

@@ -106,8 +106,7 @@ public class CourseController : DefaultController
         var user = this.GetUserInfo();
 
         var source = this.service.Last(user, currentPage, itemsPerPage);
-        //
-        
+
         var response = new ResultModel(source);
         return this.Ok(response);
     }
