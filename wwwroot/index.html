@@ -69,8 +69,43 @@
 
         <div id="WRAPPER">
             <!-- banner -->
-            <banner :source="banner_map"></banner>
-            <!-- -->
+            <!-- 
+     <banner :source="banner_map"></banner>
+            -->
+            <div id="carousel01" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+
+                <!-- The slideshow -->
+                <div class="carousel-inner" v-for="item in banner_map">
+                    <img class="carousel-item slide01" v-bind:src=item.image>
+                    <!-- 
+                                       <a class="carousel-item slide01"></a>
+                    <a class="carousel-item slide01"></a>
+                    <a class="carousel-item slide01"></a> 
+                    -->
+
+                </div>
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+            <!-- 
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div  v-for="item in banner_map">
+                        <img :src=item.image class="d-block w-100">
+                    </div>
+
+                </div>
+            </div>
+-->
+
+
+
             <div id="spinner-div" class="d-flex justify-content-center" v-if="loading">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -222,7 +257,6 @@
                 </div>
             </div>
 
-
             <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -237,7 +271,17 @@
                     </div>
                 </div>
             </div>
+
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item" v-for="item in banner_map">
+                        <img :src="item.image" class="d-block w-100">
+                    </div>
+
+                </div>
+            </div>
         </div>
+
         <footer class="inside_footer" id="Footer_front">
 
             <div class="copyright copyright_color04">
@@ -246,7 +290,7 @@
         </footer>
 
     </div>
-    
+
     <!-- template -->
     <script type="text/x-template" id="my-banner">
         <div id="carousel01" class="carousel slide carousel-fade" data-ride="carousel"  data-bs-ride="false" v-for="item in banner_map">
@@ -328,10 +372,11 @@
                 // banner 
                 getMaps().then((resp) => {
                     this.banner_map = resp;
-                    console.log('====> this.banner_ma',  this.banner_map);
-                    for (let item of this.banner_map) {
-                        item.imgSrc = `data:image/png;base64, ${item.image}`;
-                    }
+                    console.log(resp)
+                    //console.log('====> this.banner_ma', this.banner_map);
+                    //for (let item of this.banner_map) {
+                    //    item.imgSrc = `data:image/png;base64, ${item.image}`;
+                    //}
                 });
                 let token = getUrlParam('token');
                 console.log(token);
