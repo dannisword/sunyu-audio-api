@@ -438,6 +438,18 @@ public class CourseController : DefaultController
         }
 
     }
-
-
+    /// <summary>
+    /// 講師資料
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Course/ExpertDatas")]
+    public IActionResult GetExpertDatas()
+    {
+        using (var db = new DatabaseContext(this.configuration))
+        {
+            var q = from a in db.ExpertDatas
+                    select a;
+            return this.Ok(q.ToList());
+        }
+    }
 }

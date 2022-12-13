@@ -13,7 +13,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <link rel="icon" href="./images/LOGO.png" type="image/ico" />
+    <link rel="icon" href="./assets/images/LOGO.png" type="image/ico" />
     <link href="./assets/css/fontawesome.min.css" rel="stylesheet">
     <!--icon font設定-->
     <link href="./assets/css/all.css" rel="stylesheet">
@@ -188,7 +188,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- 講師陣容-->
             <div class="section bg-light">
                 <div class="container">
                     <h3>講師陣容</h3>
@@ -339,6 +339,7 @@
             getSelf,
             getSignup,
             getMaps,
+            getExpertData,
         } from './javascript/api.js'
 
         var vm = new Vue({
@@ -378,6 +379,10 @@
                     //    item.imgSrc = `data:image/png;base64, ${item.image}`;
                     //}
                 });
+
+                getExpertData().then((resp) => {
+                    console.log(resp);
+                })
                 let token = getUrlParam('token');
                 console.log(token);
                 if (token == null) {

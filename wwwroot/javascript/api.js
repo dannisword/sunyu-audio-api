@@ -6,8 +6,8 @@
 export function verifyExpiration(data) {
   return new Promise((resolve, reject) => {
     const url = `/v1/Verify/Token`;
-      fetchPost(url, data).then((resp) => {
-          console.log('====>resp', resp);
+    fetchPost(url, data).then((resp) => {
+      console.log("====>resp", resp);
       if (resp.resultCode == 10) {
         const expAt = moment(resp.content.expiration);
         const nowAt = moment();
@@ -23,8 +23,8 @@ export function verifyExpiration(data) {
 }
 /**
  * 驗證資料
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 export async function verifyToken(data) {
   const url = `/v1/Verify/Token`;
@@ -142,4 +142,13 @@ export async function setViewHistoryEnd(seq) {
 export async function addViewLog(data) {
   const url = `/v1/ViewLog`;
   return await fetchPost(url, data);
+}
+
+/**
+ * 
+ * @returns 
+ */
+export async function getExpertData() {
+  const url = `/v1/Course/ExpertDatas`;
+  return await fetchGet(url);
 }

@@ -23,6 +23,8 @@ namespace Sunyu.Audio.Cores.Infrastructure
 
         public DbSet<Company> Companies { get; set; }
 
+        public DbSet<ExpertData> ExpertDatas { get; set; }
+
         public DatabaseContext(IConfiguration configuration) : base()
         {
             this.connectString = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
