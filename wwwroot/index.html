@@ -71,40 +71,31 @@
             <!-- banner -->
             <!-- 
      <banner :source="banner_map"></banner>
+    v-for="item in banner_map"
             -->
-            <div id="carousel01" class="carousel slide" data-ride="carousel">
+            <div id="carousel01" class="carousel slide carousel-fade" data-ride="carousel" data-bs-ride="false">
                 <!-- Indicators -->
-
+                <div class="carousel-indicators">
+                    <div  v-for="(banner,index) in banner_map" :key="index">
+                    <button type="button" data-bs-target="#carousel01" :data-bs-slide-to="index" :class=" index === 0? 'active' : '' " aria-current="true"></button>
+                </div>
+                </div>
                 <!-- The slideshow -->
-                <div class="carousel-inner" v-for="item in banner_map">
-                    <img class="carousel-item slide01" v-bind:src=item.image>
-                    <!-- 
-                                       <a class="carousel-item slide01"></a>
-                    <a class="carousel-item slide01"></a>
-                    <a class="carousel-item slide01"></a> 
-                    -->
-
+                <div class="carousel-inner">
+                    <div v-for="(banner, index) in banner_map" :key="index" 
+                    :class="index === 0 ? 'carousel-item slide01 active':'carousel-item slide01'" v-bind:style="{ 'background-image': 'url(' + banner.image + ')' }">
+                    </div>
                 </div>
                 <!-- Left and right controls -->
-                <a class="carousel-control-prev" data-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </a>
-                <a class="carousel-control-next" data-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </a>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel01" data-bs-slide="prev" @click="setActive(active-1)">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel01" data-bs-slide="next" @click="setActive(active+1)">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <!-- 
-                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div  v-for="item in banner_map">
-                        <img :src=item.image class="d-block w-100">
-                    </div>
-
-                </div>
-            </div>
--->
-
-
 
             <div id="spinner-div" class="d-flex justify-content-center" v-if="loading">
                 <div class="spinner-border" role="status">
@@ -292,40 +283,7 @@
     </div>
 
     <!-- template -->
-    <script type="text/x-template" id="my-banner">
-        <div id="carousel01" class="carousel slide carousel-fade" data-ride="carousel"  data-bs-ride="false" v-for="item in banner_map">
-            <!-- Indicators -->
-             <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carousel01" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-            </div>
-            <!-- The slideshow -->
-            <div class="carousel-inner">
-                <!-- 我想用 div style background 的方式做 -->
-                <div class="carousel-item active slide01" v-bind:style="{ 'background-image': 'url(' + item.imgSrc + ')' }">
-                </div>
-                <!-- <div class="carousel-item slide01 active" style="background-image:url('./assets/images/slide01.png')">
-                </div>
-                <div class="carousel-item slide01" style="background-image:url('https://cdn.vuetifyjs.com/images/carousel/bird.jpg')">
-                </div>
-                <div class="carousel-item slide01" style="background-image:url('https://cdn.vuetifyjs.com/images/carousel/sky.jpg')">
-                </div> -->
-            </div>
-            <!-- Left and right controls -->
-             <button class="carousel-control-prev" type="button" data-bs-target="#carousel01" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carousel01" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-      </div>
-    </script>
+    
     <!-- script -->
     <script type="module">
         import { unit } from './javascript/unit.js'
@@ -491,6 +449,14 @@
                     const resp = await verifyExpiration(data);
                     return resp;
                 },
+                setActive(index) {
+                    let active = index;
+
+                    if (index === this.banner_map.length) active = 0;
+                    else if (index === -1) active = this.pictures.length - 1;
+
+                    this.active = active;
+                }
             }
         })
         vm.$mount('#app');
