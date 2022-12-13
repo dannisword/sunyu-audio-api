@@ -21,6 +21,8 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 ## 發佈程式
 dotnet publish --configuration Release
 
+發佈記得 修改 app.js
+
 ## 帳號
 anita/827ccb0eea8a706c4c34a16891f84e7b
 
