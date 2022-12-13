@@ -12,6 +12,7 @@ body {
     width: 100%;
     height: 100%;
     -webkit-text-size-adjust: none;
+    text-align: center;
 }
 
 body {
@@ -216,7 +217,7 @@ body.index {
 }
 
 .bg-y-b {
-    background: linear-gradient(to right,#ffda84, #72f1f1);
+    background: linear-gradient(to right, #ffda84, #72f1f1);
 }
 
 .a-red:hover {
@@ -456,11 +457,12 @@ a.header {
 }
 
 .slide01 {
-    background: url('../images/slide01.png') no-repeat center;
+    /*background: url('../images/slide01.png') no-repeat center;*/
     background-position: center, center;
     background-repeat: no-repeat;
     background-size: cover;
     display: block;
+
 }
 
 /* ---------目前位置-------- */
@@ -746,7 +748,7 @@ footer {
 }
 
 .inside_footer {
-  
+
     text-align: left;
 }
 
@@ -1192,7 +1194,7 @@ h1.section_title_center {
     text-align: center;
 }
 
-.progress{
+.progress {
     height: 5px;
 }
 
@@ -1208,6 +1210,7 @@ h1.section_title_center {
     justify-content: space-between;
     padding: 0 10px;
 }
+
 .nav>.nav-header {
     display: inline;
 }
@@ -1215,8 +1218,9 @@ h1.section_title_center {
 .nav>.nav-header>.nav-title {
     display: inline-block;
 }
-.nav>.nav-header>.nav-title img{
-   max-width: 120px;
+
+.nav>.nav-header>.nav-title img {
+    max-width: 120px;
     height: 32px;
 }
 
@@ -1245,6 +1249,7 @@ h1.section_title_center {
 .nav>#nav-check {
     display: none;
 }
+
 .nav-links>.user-info {
     border-right: 2px solid #f0f0f0;
     color: #0d418d;
@@ -1256,11 +1261,13 @@ h1.section_title_center {
     .nav {
         height: 50px;
     }
+
     .nav-links>.user-info {
         padding: 10px 0;
         border-bottom: 1px solid #f0f0f0;
         border-right: 0;
     }
+
     .nav>.nav-btn {
         display: inline-block;
         position: absolute;
@@ -1315,4 +1322,58 @@ h1.section_title_center {
         overflow-y: auto;
         z-index: 99999;
     }
+}
+
+/* Styling modal */
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.modal-dialog {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 480px;
+}
+
+.modal .modal-content {
+    padding: 20px 20px 20px 20px;
+    -webkit-animation-name: modal-animation;
+    -webkit-animation-duration: 0.5s;
+    animation-name: modal-animation;
+    animation-duration: 0.5s;
+}
+
+@-webkit-keyframes modal-animation {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+@keyframes modal-animation {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.button-group {
+    width: 200px;
 }

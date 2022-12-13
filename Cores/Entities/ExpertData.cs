@@ -10,6 +10,12 @@ public class ExpertData : EntityBase
 {
     public string Name { get; set; }
 
+    public string ExpertMemo { get; set; }
+
+    public string ExpertImage { get; set; }
+
+    public string ExpertImageType { get; set; }
+
     public string Area { get; set; }
 
     public int Gender { get; set; }
@@ -49,5 +55,14 @@ public class ExpertData : EntityBase
     public string ProjectExperience { get; set; }
 
     public int DeleteTag { get; set; }
+
+    [NotMapped]
+    public string Image
+    {
+        get
+        {
+            return $"{this.ExpertImageType} {this.ExpertImage}";
+        }
+    }
 
 }

@@ -20,3 +20,6 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 ## 發佈程式
 dotnet publish --configuration Release
+
+## 帳號
+anita/827ccb0eea8a706c4c34a16891f84e7b

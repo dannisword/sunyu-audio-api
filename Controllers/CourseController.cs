@@ -329,10 +329,22 @@ public class CourseController : DefaultController
     [HttpGet("Course/Maps")]
     public IActionResult GetMap()
     {
-        using (var context = new DatabaseContext(this.configuration))
+        using (var db = new DatabaseContext(this.configuration, "WebDemoConnection"))
         {
-            var maps = context.CourseMaps.Where(p => p.IsActive == 1).ToList();
-            return this.Ok(maps);
+            var company = db.Companies.FirstOrDefault();
+
+            using (var context = new DatabaseContext(this.configuration))
+            {
+                var maps = context.CourseMaps.Where(p => p.IsActive == 1).ToList();
+                foreach (var item in maps)
+                {
+                    if (company != null)
+                    {
+                        item.Image = string.Format("{0}TTQS{1}", company.Domain, item.Image);
+                    }
+                }
+                return this.Ok(maps);
+            }
         }
     }
     /// <summary>
