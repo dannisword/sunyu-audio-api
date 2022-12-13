@@ -91,6 +91,9 @@ public class CourseServices : ICourseServices
         using (var db = new DatabaseContext(this.config))
         {
             var lastAt = DateTime.Now.AddMonths(-3).ToYYYYMMDD();
+            var t0 = from a in db.ExpertDatas
+                     select a;
+            var ts = t0.ToList();
 
             var q = from a in db.Courses
                     where a.OpenSignUp == 1 &&
@@ -99,9 +102,21 @@ public class CourseServices : ICourseServices
                           a.ReleaseDate.CompareTo(lastAt) >= 0
                     orderby a.ReleaseDate descending
                     select a;
-            return q.Include(x => x.Appendiies.Where(x => x.Type == 2))
+            var o = q.Include(x => x.Appendiies.Where(x => x.Type == 2))
                     .Skip((currentPage - 1) * itemsPerPage)
                     .Take(itemsPerPage).ToList();
+            //
+            foreach (var item in o)
+            {
+                var techer = ts.Where(x => x.Seq == item.OtherLecturer).FirstOrDefault();
+                if (techer != null)
+                {
+                    item.AuthorImageBase64 = $"{techer.ExpertImageType} {techer.ExpertImage}";
+                    item.AuthorMemo = techer.ExpertMemo;
+                    item.AuthorName = techer.Name;
+                }
+            }
+            return o;
         }
     }
     /// <summary>
@@ -115,37 +130,57 @@ public class CourseServices : ICourseServices
     {
         using (var db = new DatabaseContext(this.config))
         {
+            var t0 = from a in db.ExpertDatas
+                     select a;
+            var ts = t0.ToList();
+
             var q = from a in db.Courses
                     join b in db.ViewHistories on a.Seq equals b.CourseSeq
                     where b.UserSeq == user.UserSeq &&
                           b.ViewFinishTag == 0
                     select a;
-            return q.GroupBy(g => new
+            var o = q.GroupBy(g => new
             {
                 g.Seq,
                 g.CourseName,
                 g.CourseImage,
                 g.CourseImageType,
                 g.CourseMemo,
+                g.OtherLecturer,
                 g.AuthorName,
                 g.AuthorMemo,
                 g.AuthorImage,
                 g.AuthorImageType,
-                g.CourseFocus
-
-            }).Select(x => new
+                g.CourseFocus,
+                AuthorImageBase64 = ""
+            }).Select(x => new Course()
             {
-                x.Key.Seq,
-                x.Key.CourseName,
-                x.Key.CourseImage,
-                x.Key.CourseImageType,
-                x.Key.CourseMemo,
-                x.Key.AuthorName,
-                x.Key.AuthorMemo,
-                x.Key.AuthorImage,
-                x.Key.AuthorImageType,
-                x.Key.CourseFocus
+                Seq = x.Key.Seq,
+                CourseName = x.Key.CourseName,
+                CourseImage = x.Key.CourseImage,
+                CourseImageType = x.Key.CourseImageType,
+                CourseMemo = x.Key.CourseMemo,
+                OtherLecturer = x.Key.OtherLecturer,
+                AuthorName = x.Key.AuthorName,
+                AuthorMemo = x.Key.AuthorMemo,
+                AuthorImage = x.Key.AuthorImage,
+                AuthorImageType = x.Key.AuthorImageType,
+                CourseFocus = x.Key.CourseFocus,
+                AuthorImageBase64 = x.Key.AuthorImageBase64
             }).ToList();
+
+            foreach (var item in o)
+            {
+                var techer = ts.Where(x => x.Seq == item.OtherLecturer).FirstOrDefault();
+                if (techer != null)
+                {
+                    item.AuthorImageBase64 = $"{techer.ExpertImageType} {techer.ExpertImage}";
+                    item.AuthorMemo = techer.ExpertMemo;
+                    item.AuthorName = techer.Name;
+                }
+            }
+
+            return o;
 
         }
     }
@@ -160,13 +195,29 @@ public class CourseServices : ICourseServices
     {
         using (var db = new DatabaseContext(this.config))
         {
+            var t0 = from a in db.ExpertDatas
+                     select a;
+            var ts = t0.ToList();
+
             var q = from a in db.Courses
                     where a.OpenSignUp == 1 &&
                           a.CourseRelease == 1
                     orderby a.ReleaseDate descending
                     select a;
 
-            return q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+            var o = q.Include(x => x.Appendiies).Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+
+            foreach (var item in o)
+            {
+                var techer = ts.Where(x => x.Seq == item.OtherLecturer).FirstOrDefault();
+                if (techer != null)
+                {
+                    item.AuthorImageBase64 = $"{techer.ExpertImageType} {techer.ExpertImage}";
+                    item.AuthorMemo = techer.ExpertMemo;
+                    item.AuthorName = techer.Name;
+                }
+            }
+            return o;
         }
     }
 
@@ -174,6 +225,10 @@ public class CourseServices : ICourseServices
     {
         using (var db = new DatabaseContext(this.config))
         {
+            var t0 = from a in db.ExpertDatas
+                     select a;
+            var ts = t0.ToList();
+
             var q = from a in db.Courses
                     join b in db.CourseSignups on a.Seq equals b.CourseSeq
                     where b.SignUpUser == user.UserSeq &&
@@ -189,13 +244,20 @@ public class CourseServices : ICourseServices
             {
                 var duration = item.Appendiies.Sum(x => x.Duration);
                 var viewLastTime = db.ViewHistories.Where(x => x.CourseSeq == item.Seq &&
-                                                          x.UserSeq == user.UserSeq)
+                                                              x.UserSeq == user.UserSeq)
                                                     .Sum(p => p.ViewLastTime);
+                item.Scale = "0%";
                 if (duration > 0)
                 {
-                    item.Scale = viewLastTime / duration * 100;
+                    item.Scale = string.Format("{0}%", Math.Floor(viewLastTime / duration * 100));
                 }
-
+                var techer = ts.Where(x => x.Seq == item.OtherLecturer).FirstOrDefault();
+                if (techer != null)
+                {
+                    item.AuthorImageBase64 = $"{techer.ExpertImageType} {techer.ExpertImage}";
+                    item.AuthorMemo = techer.ExpertMemo;
+                    item.AuthorName = techer.Name;
+                }
             }
             return source;
         }

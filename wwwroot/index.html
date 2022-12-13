@@ -61,7 +61,7 @@
                     <p class="user-info">{{user.userAccount}}, 您好</p>
                     <a @click="onNav('index.html')">所有課程</a>
                     <a @click="onNav('myClass.html')">我的課程</a>
-                    <a>登出</a>
+                    <a @click="logout()">登出</a>
                 </div>
             </div>
 
@@ -109,14 +109,14 @@
                     <div class="row my-4">
                         <div class="col-12 col-sm-6 mb-4" v-for="item in last">
                             <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card">
+                                <div class="card text-align-left">
                                     <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.src"> </img>
+                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
 
                                     <div class="card-body">
                                         <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
                                         <div class="teacher_info">
-                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
                                             {{ item.authorName }}
 
                                         </div>
@@ -131,14 +131,14 @@
                     <div class="row my-4">
                         <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in half">
                             <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card">
+                                <div class="card text-align-left">
                                     <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.src"> </img>
+                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
 
                                     <div class="card-body">
                                         <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
                                         <div class="teacher_info">
-                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
                                             {{ item.authorName }}
 
                                         </div>
@@ -151,7 +151,7 @@
 
                     <div class="form-inline section_title_left">
                         <label class="my-1 mr-3">全部課程</label>
-                        <select class="form-control my-2">
+                        <select class="form-control my-2" style="width: 200px;">
                             <option>全部</option>
                             <option>類別1</option>
                             <option>類別2</option>
@@ -160,14 +160,14 @@
                     <div class="row my-4">
                         <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in mine">
                             <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card">
+                                <div class="card text-align-left">
                                     <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.src"> </img>
+                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
 
                                     <div class="card-body">
                                         <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
                                         <div class="teacher_info">
-                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
                                             {{ item.authorName }}
 
                                         </div>
@@ -274,7 +274,6 @@
                 // 專家資料
                 getExpertData().then((resp) => {
                     this.experts = resp;
-                    console.log(this.experts);
                 });
                 let token = getUrlParam('token');
                 //console.log(token);
@@ -291,35 +290,24 @@
             methods: {
                 async onLoad() {
                     this.loading = true;
-                    let query = getUrlQuery(this.params.last);
+                    let params = getUrlQuery(this.params.last);
 
-                    const last = await getLast(query);
+                    const last = await getLast(params);
                     if (last.resultCode == 10) {
                         this.last = last.content;
-                        for (let item of this.last) {
-                            item.src = `${item.courseImageType} ${item.courseImage}`;
-                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
-                        }
                     }
-                    const half = await getHalf(query);
+                    params = getUrlQuery(this.params.half);
+                    const half = await getHalf(params);
                     if (half.resultCode == 10) {
                         this.half = half.content;
-                        for (let item of this.half) {
-                            item.src = `${item.courseImageType} ${item.courseImage}`;
-                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
-                        }
                     }
 
-                    const mine = await getHalf(query);
+                    params = getUrlQuery(this.params.mine);
+                    const mine = await getMine(params);
                     if (mine.resultCode == 10) {
                         this.mine = mine.content;
-                        for (let item of this.mine) {
-                            item.src = `${item.courseImageType} ${item.courseImage}`;
-                            item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
-                        }
                     }
                     this.loading = false;
-
                 },
                 onOpen() {
                     var elm = document.getElementById('infoModal')
@@ -382,6 +370,10 @@
                         active = this.pictures.length - 1;
                     }
                     this.active = active;
+                },
+                logout() {
+                    localStorage.clear();
+                    window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
                 }
             }
         })

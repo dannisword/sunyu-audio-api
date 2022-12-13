@@ -168,7 +168,7 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     [NotMapped]
-    public double Scale { get; set; }
+    public string Scale { get; set; }
     /// <summary>
     /// 課程圖檔
     /// </summary>
@@ -186,11 +186,6 @@ public class Course : EntityBase
     /// </summary>
     /// <value></value>
     [NotMapped]
-    public string AuthorImageBase64
-    {
-        get
-        {
-            return $"{this.AuthorImageType} {this.AuthorImage}";
-        }
-    }
+    public string AuthorImageBase64 { get; set; }
+
 }

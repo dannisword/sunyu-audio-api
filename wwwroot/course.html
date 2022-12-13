@@ -59,7 +59,7 @@
                     <p class="user-info">{{user.userAccount}}, 您好</p>
                     <a @click="onNav('index.html')">所有課程</a>
                     <a @click="onNav('myClass.html')">我的課程</a>
-                    <a>登出</a>
+                    <a @click="logout()">登出</a>
                 </div>
             </div>
 
@@ -308,6 +308,10 @@
                         active = this.pictures.length - 1;
                     }
                     this.active = active;
+                },
+                logout() {
+                    localStorage.clear();
+                    window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
                 }
             },
             async beforeDestroy() {
