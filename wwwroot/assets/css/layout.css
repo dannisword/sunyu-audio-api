@@ -1209,6 +1209,9 @@ h1.section_title_center {
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
+    background: url(/assets/images/navbar-bg-04.png) no-repeat left center;
+    background-size: cover;
+    min-height: 76px;
 }
 
 .top-nav>.nav-header {
@@ -1269,10 +1272,12 @@ h1.section_title_center {
     }
 
     .top-nav>.nav-btn {
-        display: inline-block;
         position: absolute;
         right: 0px;
-        top: 0px;
+        display: flex;
+        right: 0px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .top-nav>.nav-btn>label {
