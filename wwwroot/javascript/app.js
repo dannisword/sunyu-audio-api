@@ -68,7 +68,7 @@ const getAPIUrl = function () {
   if (isDevelopment == true) {
     return "http://localhost:7197";
   }
-  return "https://demo.sunyu-tech.com.tw/Audio";
+  return "http://demo.sunyu-tech.com.tw/Audio";
 };
 
 /**

@@ -175,7 +175,9 @@
                     dialog: false,
                     banner_map: [],
                     experts: [],
-                    user: {},
+                    user: {
+                        userAccount: ""
+                    },
                     params: {
                         self: {
                             currentPage: 1,
@@ -247,9 +249,34 @@
                     this.active = active;
                 },
                 logout() {
+                    var params = [];
+                    params["token"] = "11111";
+
+                    openPost('index.html', params);
+                    return
                     localStorage.clear();
+                    sessionStorage.clear();
                     window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
+
+
+                },
+                openPost(url, params) {
+                    var form = document.createElement("form");
+                    form.setAttribute("method", "post");
+                    form.setAttribute("action", url);
+                    form.setAttribute("target", "_parent");
+
+                    for (param in params) {
+                        var hiddenField = document.createElement("input");
+                        hiddenField.setAttribute("name", param);
+                        hiddenField.setAttribute("value", params[param]);
+                        form.appendChild(hiddenField);
+                    }
+
+                    document.body.appendChild(form);
+                    form.submit();
                 }
+
             }
         });
     </script>
