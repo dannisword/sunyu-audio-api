@@ -111,7 +111,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
                                         <div class="teacher_info">
-                                            <img :src="item.authorSrc" class="rounded-circle teacher_pic" />
+                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
                                             {{ item.authorName }}
                                         </div>
                                     </div>
@@ -206,18 +206,12 @@
                         .then((resp) => {
                             if (resp.resultCode == 10) {
                                 this.self = resp.content;
-                                for (let item of this.self) {
-                                    item.authorSrc = `${item.authorImageType} ${item.authorImage}`;
-                                }
                             } else {
                                 this.self = [];
                                 this.message = resp.message;
                                 this.dialog = true;
                             }
-
-                            setTimeout(() => {
-                                this.loading = false;
-                            }, 500)
+                            this.loading = false;
                         })
                         .catch((e) => {
                             this.loading = false;
@@ -252,25 +246,31 @@
                     var params = [];
                     params["token"] = "11111";
 
-                    openPost('index.html', params);
+                    this.post('/Audio/index.html', params);
                     return
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
+                    //localStorage.clear();
+                    //sessionStorage.clear();
+                    //window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
 
 
                 },
-                openPost(url, params) {
-                    var form = document.createElement("form");
-                    form.setAttribute("method", "post");
-                    form.setAttribute("action", url);
-                    form.setAttribute("target", "_parent");
+                post(path, params, method = 'post') {
 
-                    for (param in params) {
-                        var hiddenField = document.createElement("input");
-                        hiddenField.setAttribute("name", param);
-                        hiddenField.setAttribute("value", params[param]);
-                        form.appendChild(hiddenField);
+                    // The rest of this code assumes you are not using a library.
+                    // It can be made less verbose if you use one.
+                    const form = document.createElement('form');
+                    form.method = method;
+                    form.action = path;
+
+                    for (const key in params) {
+                        if (params.hasOwnProperty(key)) {
+                            const hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = key;
+                            hiddenField.value = params[key];
+
+                            form.appendChild(hiddenField);
+                        }
                     }
 
                     document.body.appendChild(form);
