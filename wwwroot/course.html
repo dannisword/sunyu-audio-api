@@ -40,7 +40,7 @@
 <body>
     <div id="app">
         <header id="Header_front">
-            <div class="nav">
+            <div class="top-nav">
                 <input type="checkbox" id="nav-check">
                 <div class="nav-header">
                     <div class="nav-title navbar-brand">
@@ -66,7 +66,7 @@
         </header>
         <div id="WRAPPER">
             <!-- banner -->
-            <div id="carousel01" class="carousel slide carousel-fade" data-ride="carousel" data-bs-ride="false">
+            <div id="carousel01" class="carousel slide carousel-fade py-3" data-ride="carousel" data-bs-ride="false">
                 <!-- Indicators -->
                 <div class="carousel-indicators">
                     <div v-for="(banner,index) in banner_map" :key="index">
@@ -112,11 +112,12 @@
                         </div>
 
                         <div class="col-12 col-md-3 mt-2 mt-md-0">
-                            <div class="nav flex-column nav-pills button-group" id="v-pills-tab" role="tablist"
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
-                                <a class="nav-link btn-light active" id="video01-tab" data-toggle="pill"
+                                <a  id="video01-tab" data-toggle="pill"
                                     data-target="#video01" type="button" role="tab" aria-controls="video01"
-                                    aria-selected="true" v-for="item in course.appendiies" @click="onChang(item)">
+                                    aria-selected="true" v-for="(item,idex) in course.appendiies" :key="idex" @click="onChang(item)"
+                                    :class="idex === active ? 'nav-link btn-light active':'nav-link btn-light'" >
                                     {{ item.unit }}
                                 </a>
                             </div>
@@ -164,7 +165,7 @@
 
     <!-- template -->
     <script type="text/x-template" id="my-banner">
-        <div id="carousel01" class="carousel slide" data-ride="carousel">
+        <div id="carousel01" class="carousel slide py-3" data-ride="carousel">
             <!-- Indicators -->
             <ul class="carousel-indicators">
                 <li data-target="#carousel01" data-slide-to="0" class="active"></li>
@@ -204,6 +205,7 @@
                 return {
                     loading: false,
                     seq: 0,
+                    active: 0,
                     course: {},
                     user: {},
                     appendix: {},
@@ -261,6 +263,9 @@
                     this.loading = true;
                     this.video.pause();
                     this.appendix = val;
+                    // 取得觀看章節的 index
+                    const idx = this.course.appendiies.indexOf(val);
+                    this.active = idx
                     setTimeout(() => {
                         this.loading = false;
                     }, 500);
