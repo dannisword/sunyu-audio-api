@@ -222,7 +222,8 @@
 
     <!-- script -->
     <script type="module">
-        import { unit } from './javascript/unit.js'
+        import { unit } from './javascript/unit.js';
+        import { config } from "./javascript/config.js";
         import {
             verifyExpiration,
             verifyToken,
@@ -276,14 +277,18 @@
                     this.experts = resp;
                 });
                 let token = getUrlParam('token');
-                //console.log(token);
+                console.log(token);
                 if (token == null) {
                     token = getToken();
+                    //token = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ7XCJVc2VyU2VxXCI6MyxcIlVzZXJXb3JrTnVtXCI6XCJBMDAxXCIsXCJVc2VyTmFtZVwiOlwiYWFhXCIsXCJVc2VyQWNjb3VudFwiOlwiYW5pdGFcIixcIlVzZXJSb2xlXCI6MyxcIlVzZXJNb2JpbGVcIjpcIjA5MTIxMTIzMTJcIixcIkV4dGVuc2lvblwiOlwiXCIsXCJVc2VyTWFpbFwiOlwiYW5pdGFAdGVzdC5jbVwiLFwiVXNlclVuaXRcIjoxMyxcIlVzZXJKb2JUaXRsZVwiOjE0LFwiTWFuYWdlbWVudFwiOjAsXCJTdHJhdFdvcmtEYXlcIjpcIjIwMjItMDktMDFUMDA6MDA6MDBcIixcIkNyZWF0RGF0ZVwiOlwiMjAyMi0xMS0wMlQyMDo0NDo1N1wiLFwiQ3JlYXRVc2VyXCI6MSxcIklzQWN0aXZlXCI6MSxcIkRlbGV0ZVRhZ1wiOjAsXCJUb2tlblwiOm51bGwsXCJFeHBpcmF0aW9uXCI6bnVsbH0iLCJqdGkiOiIwOTdiNjI0OC1lYWQwLTQwMTctYjBiZC1hYmFjYjY0ZmM4ZTIiLCJuYmYiOjE2NzIwNDMyOTAsImV4cCI6MTY3MjEyOTY5MCwiaWF0IjoxNjcyMDQzMjkwLCJpc3MiOiJTdW55dSJ9.fLEpHy4xtuzJV8WyZeQmPF6mlTLE7mluq5RrioNBq8A";
                 }
                 if (token == null) {
                     this.message = "帳號驗證錯誤，請重新登入";
                     this.infoModal = bsModal('infoModal');
                     this.infoModal.show();
+                }
+                if (location.href.includes('?')) {
+                    history.pushState({}, null, location.href.split('?')[0]);
                 }
                 this.verifyToken(token);
             },
@@ -374,7 +379,7 @@
                 logout() {
                     localStorage.clear();
                     sessionStorage.clear();
-                    window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
+                    window.location.href = config().home_url;
                 }
             }
         })
