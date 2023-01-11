@@ -178,7 +178,7 @@ public class Course : EntityBase
     {
         get
         {
-            return $"{this.CourseImageType} {this.CourseImage}";
+            return $"data:image/jpeg;base64, {this.CourseImage}";
         }
     }
     /// <summary>
