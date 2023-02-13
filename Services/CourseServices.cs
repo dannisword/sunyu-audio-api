@@ -174,7 +174,7 @@ public class CourseServices : ICourseServices
                 var techer = ts.Where(x => x.Seq == item.OtherLecturer).FirstOrDefault();
                 if (techer != null)
                 {
-                    item.AuthorImageBase64 = $"{techer.ExpertImageType} {techer.ExpertImage}";
+                    item.AuthorImageBase64 = $"data:image/jpeg;base64, {techer.ExpertImage}";
                     item.AuthorMemo = techer.ExpertMemo;
                     item.AuthorName = techer.Name;
                 }

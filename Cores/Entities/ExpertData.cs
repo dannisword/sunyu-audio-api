@@ -61,7 +61,8 @@ public class ExpertData : EntityBase
     {
         get
         {
-            return $"{this.ExpertImageType} {this.ExpertImage}";
+            //$"data:image/jpeg;base64,
+            return $"data:image/jpeg;base64, {this.ExpertImage}";
         }
     }
 
