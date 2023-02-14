@@ -82,7 +82,9 @@ li {
 .form-control {
     height: calc(1.5em + .75rem + 2px);
     padding: .3rem .5rem;
+    width: auto;
 }
+
 
 /* ---------------------登入區塊------------------------*/
 
@@ -1385,4 +1387,13 @@ h1.section_title_center {
 
 .ml-10 {
     margin-left: 10px;
+}
+
+.bg-theme {
+    background: #ff450b;
+    color: #fff;
+}
+
+.mr-10px {
+    margin-right: 10px !important;
 }

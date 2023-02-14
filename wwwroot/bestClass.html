@@ -24,18 +24,17 @@
     <link rel="stylesheet" href="./assets/css/chosen.min.css">
     <link rel="stylesheet" href="./assets/css/datatables.min.css">
     <link href="./assets/doc.css" rel="stylesheet">
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
 
-    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+    <script src="./javascript/video.js"></script>
     <script src="./javascript/app.js"></script>
-
     <script src="./pages/component.js"> </script>
-
 </head>
 
 <body>
@@ -103,107 +102,117 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-
-            <div class="section">
-                <div class="container">
-                    <h1>最新上架</h1>
-                    <div class="row my-4">
-                        <div class="col-12 col-sm-6 mb-4" v-for="item in last">
-                            <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card text-align-left">
-                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
-
-                                    <div class="card-body">
-                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
-                                        <div class="teacher_info">
-                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
-                                            {{ item.authorName }}
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h2>繼續看</h2>
-                    <div class="row my-4">
-                        <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in half">
-                            <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card text-align-left">
-                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
-
-                                    <div class="card-body">
-                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
-                                        <div class="teacher_info">
-                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
-                                            {{ item.authorName }}
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-inline section_title_left">
-                        <label class="my-1 mr-3">全部課程</label>
-                        <!-- 
-                        <select class="form-control my-2" style="width: 200px;">
-                            <option>全部</option>
-                            <option>類別1</option>
-                            <option>類別2</option>
-                        </select>
-                        -->
-                        <select class="form-control my-2" v-model="params.mine.category" style="width: 200px;"
-                            @change="onChange">
-                            <option value="0">全部</option>
-                            <option v-for="item in fun_categories" :value="item.seq">{{item.name}}</option>
-                        </select>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-12 col-sm-6 col-lg-4 mb-4" v-for="item in mine">
-                            <div class="btn-block btn-shadow" @click="onNavCourse(item)">
-                                <div class="card text-align-left">
-                                    <img src="assets/images/lesson01_bg.png" class="card-img-top">
-                                    <img class="lesson_pic_100" :src="item.courseImageBase46"> </img>
-
-                                    <div class="card-body">
-                                        <h4 class="card-title font-weight-bold mb-0">{{item.courseName}}</h4>
-                                        <div class="teacher_info">
-                                            <img :src="item.authorImageBase64" class="rounded-circle teacher_pic" />
-                                            {{ item.authorName }}
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 講師陣容-->
             <div class="section bg-light">
                 <div class="container">
-                    <h3>講師陣容</h3>
+                    <h1>推薦課程</h1>
                     <div class="row my-4">
-                        <div class="col-6 col-sm-4 col-md-2 border-right mt-2 mb-4" v-for="item in experts">
-                            <div class="text-center">
-                                <img :src="item.image" alt="老師照片" class="teacher_list_pic rounded-circle">
+                        <div class="col-12 col-sm-12">
+                            <div class="text-align-left">
+                                <h3>資訊科技</h3>
                             </div>
-                            <div class="w-100">
-                                <p class="mt-2 mb-0 font-weight-bold">{{item.name}}</p>
-                                <span v-html="item.expertMemo"></span>
+                        </div>
+                        <div class="col-12 col-sm-12 mb-4">
+                            <div class="d-flex flex-row align-items-center">
+                                <button type="button" class="btn btn-outline-dark mr-10px">資訊安全能力</button>
+                                <button type="button" class="btn btn-outline-dark mr-10px">哈燒職場系列</button>
+                                <button type="button" class="btn btn-outline-dark mr-10px">雲端趨勢應用</button>
                             </div>
                         </div>
                     </div>
+                    <div class="text-align-left">
+                        <h3>關於哈燒共有五堂課</h3>
+                    </div>
+                    <div class="row">
+                        <div class="form-inline">
+                            <select class="form-control my-2">
+                                <option>頁數</option>
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-lg-12 mb-4 table-responsive">
+                        <table id="dtBasicExample" class="table table-striped table-bordered table-sm bg-white" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="th-sm">名稱
+                        
+                                    </th>
+                                    <th class="th-sm">時間長度
+                        
+                                    </th>
+                                    <th class="th-sm">參與人數
+                        
+                                    </th>
+                                    <th class="th-sm">截止日期
+                        
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
+                                    <td>Edinburgh</td>
+                                    <td>61</td>
+                                </tr>
+                                <tr>
+                                    <td>Garrett Winters</td>
+                                    <td>Accountant</td>
+                                    <td>Tokyo</td>
+                                    <td>63</td>
+                                </tr>
+                                <tr>
+                                    <td>Ashton Cox</td>
+                                    <td>Junior Technical Author</td>
+                                    <td>San Francisco</td>
+                                    <td>66</td>
+                                </tr>
+                                <tr>
+                                    <td>Cedric Kelly</td>
+                                    <td>Senior Javascript Developer</td>
+                                    <td>Edinburgh</td>
+                                    <td>22</td>
+                                </tr>
+                                <tr>
+                                    <td>Airi Satou</td>
+                                    <td>Accountant</td>
+                                    <td>Tokyo</td>
+                                    <td>33</td>
+                                </tr>
+                                <tr>
+                                    <td>Brielle Williamson</td>
+                                    <td>Integration Specialist</td>
+                                    <td>New York</td>
+                                    <td>61</td>
+                                </tr>
+                                <tr>
+                                    <td>Herrod Chandler</td>
+                                    <td>Sales Assistant</td>
+                                    <td>San Francisco</td>
+                                    <td>59</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Rhona Davidson</td>
+                                    <td>Integration Specialist</td>
+                                    <td>Tokyo</td>
+                                    <td>55</td>
+                                </tr>
+                                <tr>
+                                    <td>Colleen Hurst</td>
+                                    <td>Javascript Developer</td>
+                                    <td>San Francisco</td>
+                                    <td>39</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    
                 </div>
             </div>
+            
             <!-- 提示視窗 -->
             <div class="modal fade" id="infoModal" aria-hidden="true">
                 <div class="modal-dialog">
@@ -244,8 +253,6 @@
             getSignup,
             getMaps,
             getExpertData,
-            getFunctionCategories,
-            getRecommendType
         } from './javascript/api.js'
 
         var vm = new Vue({
@@ -258,9 +265,6 @@
                     active: 0,
                     user: {},
                     experts: [],
-                    fun_categories: [],
-                    recommendTypes:[],
-                    recommends:[],
                     params: {
                         last: {
                             currentPage: 1,
@@ -271,10 +275,8 @@
                             itemsPerPage: 3,
                         },
                         mine: {
-                            category: 0,
                             currentPage: 1,
-                            itemsPerPage: 20,
-
+                            itemsPerPage: 6,
                         },
                     },
                     last: [],
@@ -292,12 +294,8 @@
                 getExpertData().then((resp) => {
                     this.experts = resp;
                 });
-                // 類型
-                getFunctionCategories().then((resp) => {
-                    this.fun_categories = resp;
-                });
-                // 推薦課程
                 let token = getUrlParam('token');
+                console.log(token);
                 if (token == null) {
                     token = getToken();
                     //token = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ7XCJVc2VyU2VxXCI6MyxcIlVzZXJXb3JrTnVtXCI6XCJBMDAxXCIsXCJVc2VyTmFtZVwiOlwiYWFhXCIsXCJVc2VyQWNjb3VudFwiOlwiYW5pdGFcIixcIlVzZXJSb2xlXCI6MyxcIlVzZXJNb2JpbGVcIjpcIjA5MTIxMTIzMTJcIixcIkV4dGVuc2lvblwiOlwiXCIsXCJVc2VyTWFpbFwiOlwiYW5pdGFAdGVzdC5jbVwiLFwiVXNlclVuaXRcIjoxMyxcIlVzZXJKb2JUaXRsZVwiOjE0LFwiTWFuYWdlbWVudFwiOjAsXCJTdHJhdFdvcmtEYXlcIjpcIjIwMjItMDktMDFUMDA6MDA6MDBcIixcIkNyZWF0RGF0ZVwiOlwiMjAyMi0xMS0wMlQyMDo0NDo1N1wiLFwiQ3JlYXRVc2VyXCI6MSxcIklzQWN0aXZlXCI6MSxcIkRlbGV0ZVRhZ1wiOjAsXCJUb2tlblwiOm51bGwsXCJFeHBpcmF0aW9uXCI6bnVsbH0iLCJqdGkiOiIwOTdiNjI0OC1lYWQwLTQwMTctYjBiZC1hYmFjYjY0ZmM4ZTIiLCJuYmYiOjE2NzIwNDMyOTAsImV4cCI6MTY3MjEyOTY5MCwiaWF0IjoxNjcyMDQzMjkwLCJpc3MiOiJTdW55dSJ9.fLEpHy4xtuzJV8WyZeQmPF6mlTLE7mluq5RrioNBq8A";
@@ -316,18 +314,16 @@
                 async onLoad() {
                     this.loading = true;
                     let params = getUrlQuery(this.params.last);
-                    // 最新上架
+
                     const last = await getLast(params);
                     if (last.resultCode == 10) {
                         this.last = last.content;
                     }
-                    // 繼續看
                     params = getUrlQuery(this.params.half);
                     const half = await getHalf(params);
                     if (half.resultCode == 10) {
                         this.half = half.content;
                     }
-                    //  全部課程
 
                     params = getUrlQuery(this.params.mine);
                     const mine = await getMine(params);
@@ -352,15 +348,6 @@
                         return;
                     }
                     window.location.href = `course.html?seq=${item.seq}`;
-                },
-                async onChange(val) {
-                    console.log(val.target.value);
-
-                    let params = getUrlQuery(this.params.mine);
-                    const mine = await getMine(params);
-                    if (mine.resultCode == 10) {
-                        this.mine = mine.content;
-                    }
                 },
                 verifyToken(token) {
                     const data = {
@@ -417,6 +404,5 @@
         vm.$mount('#app');
     </script>
 </body>
-
 
 </html>
