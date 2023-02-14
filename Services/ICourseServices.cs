@@ -18,7 +18,7 @@ public interface ICourseServices
 
     IEnumerable<dynamic> Half(UserInfo user, int currentPage, int itemsPerPage);
 
-    IEnumerable<dynamic> Mine(UserInfo user, int currentPage, int itemsPerPage);
+    IEnumerable<dynamic> Mine(UserInfo user, int category, int currentPage, int itemsPerPage);
 
     IEnumerable<dynamic> Self(UserInfo user, int currentPage, int itemsPerPage);
 

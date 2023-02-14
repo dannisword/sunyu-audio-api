@@ -151,10 +151,17 @@
 
                     <div class="form-inline section_title_left">
                         <label class="my-1 mr-3">全部課程</label>
+                        <!-- 
                         <select class="form-control my-2" style="width: 200px;">
                             <option>全部</option>
                             <option>類別1</option>
                             <option>類別2</option>
+                        </select>
+                        -->
+                        <select class="form-control my-2" v-model="params.mine.category" style="width: 200px;"
+                            @change="onChange">
+                            <option value="0">全部</option>
+                            <option v-for="item in fun_categories" :value="item.seq">{{item.name}}</option>
                         </select>
                     </div>
                     <div class="row my-4">
@@ -178,6 +185,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- 講師陣容-->
             <div class="section bg-light">
                 <div class="container">
@@ -235,6 +243,8 @@
             getSignup,
             getMaps,
             getExpertData,
+            getFunctionCategories,
+            getRecommendType
         } from './javascript/api.js'
 
         var vm = new Vue({
@@ -247,6 +257,9 @@
                     active: 0,
                     user: {},
                     experts: [],
+                    fun_categories: [],
+                    recommendTypes:[],
+                    recommends:[],
                     params: {
                         last: {
                             currentPage: 1,
@@ -257,8 +270,10 @@
                             itemsPerPage: 3,
                         },
                         mine: {
+                            category: 0,
                             currentPage: 1,
-                            itemsPerPage: 6,
+                            itemsPerPage: 20,
+
                         },
                     },
                     last: [],
@@ -274,9 +289,13 @@
                 });
                 // 專家資料
                 getExpertData().then((resp) => {
-                    console.log(resp);
                     this.experts = resp;
                 });
+                // 類型
+                getFunctionCategories().then((resp) => {
+                    this.fun_categories = resp;
+                });
+                // 推薦課程
                 let token = getUrlParam('token');
                 if (token == null) {
                     token = getToken();
@@ -296,16 +315,18 @@
                 async onLoad() {
                     this.loading = true;
                     let params = getUrlQuery(this.params.last);
-
+                    // 最新上架
                     const last = await getLast(params);
                     if (last.resultCode == 10) {
                         this.last = last.content;
                     }
+                    // 繼續看
                     params = getUrlQuery(this.params.half);
                     const half = await getHalf(params);
                     if (half.resultCode == 10) {
                         this.half = half.content;
                     }
+                    //  全部課程
 
                     params = getUrlQuery(this.params.mine);
                     const mine = await getMine(params);
@@ -330,6 +351,15 @@
                         return;
                     }
                     window.location.href = `course.html?seq=${item.seq}`;
+                },
+                async onChange(val) {
+                    console.log(val.target.value);
+
+                    let params = getUrlQuery(this.params.mine);
+                    const mine = await getMine(params);
+                    if (mine.resultCode == 10) {
+                        this.mine = mine.content;
+                    }
                 },
                 verifyToken(token) {
                     const data = {

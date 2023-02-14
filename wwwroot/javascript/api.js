@@ -145,10 +145,25 @@ export async function addViewLog(data) {
 }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 export async function getExpertData() {
   const url = `/v1/Course/ExpertDatas`;
+  return await fetchGet(url);
+}
+
+export async function getFunctionCategories() {
+  const url = `/v1/Course/FunctionCategories`;
+  return await fetchGet(url);
+}
+
+export async function getRecommendType() {
+  const url = `/v1/Course/GetRecommendType`;
+  return await fetchGet(url);
+}
+
+export async function getRecommendClasses(params) {
+  const url = `/v1/Course/GetRecommendClasses${params}`;
   return await fetchGet(url);
 }

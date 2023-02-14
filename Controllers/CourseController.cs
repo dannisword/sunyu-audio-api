@@ -72,7 +72,7 @@ public class CourseController : DefaultController
      /// <param name="itemsPerPage"></param>
      /// <returns></returns>
      [HttpGet("Course/Mine")]
-     public IActionResult Mine(int currentPage = 1, int itemsPerPage = 10)
+     public IActionResult Mine(int category, int currentPage = 1, int itemsPerPage = 10)
      {
           var resp = new ResultModel();
           if (this.Identity.IsAuthenticated == false)
@@ -82,7 +82,7 @@ public class CourseController : DefaultController
           }
 
           var user = this.GetUserInfo();
-          var source = this.service.Mine(user, currentPage, itemsPerPage);
+          var source = this.service.Mine(user, category, currentPage, itemsPerPage);
           var response = new ResultModel(source);
 
           return this.Ok(response);
@@ -460,9 +460,61 @@ public class CourseController : DefaultController
           using (var db = new DatabaseContext(this.configuration))
           {
                var q = from a in db.ExpertDatas
-                       where a.DeleteTag == 1
+                       where a.DeleteTag == 0
                        select a;
                return this.Ok(q.ToList());
+          }
+     }
+     [HttpGet("Course/FunctionCategories")]
+     public IActionResult GetFunctionCategories()
+     {
+          using (var db = new DatabaseContext(this.configuration))
+          {
+               var q = from a in db.FunctionCategories
+                       where a.DeleteTag == 0
+                       select a;
+               return this.Ok(q.ToList());
+          }
+     }
+
+     [HttpGet("Course/RecommendType")]
+     public IActionResult GetRecommendType()
+     {
+          using (var db = new DatabaseContext(this.configuration))
+          {
+               var q = from a in db.RecommendClasses
+                       select a;
+
+               var g = q.ToList().GroupBy(x => x.CourseSubcategory)
+                        .Select((p, i) => new
+                        {
+                             RowNumber = i,
+                             CourseSubcategory = p.Key
+                        });
+
+               return this.Ok(g);
+          }
+     }
+     [HttpGet("Course/RecommendClasses")]
+     public IActionResult GetRecommendClasses(string subCategoryType, int currentPage, int itemsPerPage)
+     {
+          using (var db = new DatabaseContext(this.configuration))
+          {
+               var q = from a in db.RecommendClasses
+                       select a;
+               IEnumerable<dynamic> data;
+               if (string.IsNullOrEmpty(subCategoryType) != true)
+               {
+                    data = q.Where(x => x.CourseSubcategory == subCategoryType)
+                            .Skip((currentPage - 1) * itemsPerPage)
+                            .Take(itemsPerPage).ToList();
+               }
+               else
+               {
+                    data = q.Skip((currentPage - 1) * itemsPerPage)
+                            .Take(itemsPerPage).ToList();
+               }
+               return this.Ok(data);
           }
      }
 }

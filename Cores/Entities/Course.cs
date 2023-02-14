@@ -42,7 +42,7 @@ public class Course : EntityBase
     /// 職能類別
     /// </summary>
     /// <value></value>
-    public int? FunctionCategory { get; set; }
+    public int FunctionCategory { get; set; }
     /// <summary>
     /// 訓練目的
     /// </summary>
