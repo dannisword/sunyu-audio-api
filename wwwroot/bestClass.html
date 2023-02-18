@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-12 col-sm-12 mb-4">
                             <div class="d-flex flex-row align-items-center">
-                                <button type="button" class="btn btn-outline-dark mr-10px" @click="onClikc(item)"
+                                <button type="button" class="btn btn-outline-dark mr-10px" @click="onClick(item)"
                                     v-for="item in recommendTypes">{{item.courseSubcategory}}</button>
 
                             </div>
@@ -273,10 +273,12 @@
 
                     this.loading = false;
                 },
-                onClikc(value) {
+                onClick(value) {
+                    this.recommendType = value;
                     this.getRecommendClasses(value.courseSubcategory);
                 },
                 onChange(value) {
+                    console.log(this.recommendType);
                     this.getRecommendClasses(this.recommendType.courseSubcategory, value);
                 },
                 onNav(page) {
@@ -288,6 +290,7 @@
                         currentPage: currentPage,
                         itemsPerPage: 5
                     };
+                    this.item = currentPage;
                     const data = getUrlQuery(params);
 
                     getRecommendClasses(data).then((resp) => {
