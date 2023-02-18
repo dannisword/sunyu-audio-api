@@ -259,8 +259,8 @@
                     user: {},
                     experts: [],
                     fun_categories: [],
-                    recommendTypes:[],
-                    recommends:[],
+                    recommendTypes: [],
+                    recommends: [],
                     params: {
                         last: {
                             currentPage: 1,
@@ -328,7 +328,6 @@
                         this.half = half.content;
                     }
                     //  全部課程
-
                     params = getUrlQuery(this.params.mine);
                     const mine = await getMine(params);
                     if (mine.resultCode == 10) {

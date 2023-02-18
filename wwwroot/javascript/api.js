@@ -159,11 +159,11 @@ export async function getFunctionCategories() {
 }
 
 export async function getRecommendType() {
-  const url = `/v1/Course/GetRecommendType`;
+  const url = `/v1/Course/RecommendType`;
   return await fetchGet(url);
 }
 
 export async function getRecommendClasses(params) {
-  const url = `/v1/Course/GetRecommendClasses${params}`;
+  const url = `/v1/Course/RecommendClasses${params}`;
   return await fetchGet(url);
 }

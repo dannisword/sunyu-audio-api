@@ -483,6 +483,7 @@ public class CourseController : DefaultController
           using (var db = new DatabaseContext(this.configuration))
           {
                var q = from a in db.RecommendClasses
+                       where a.CourseCategory == "資訊科技"
                        select a;
 
                var g = q.ToList().GroupBy(x => x.CourseSubcategory)
@@ -501,7 +502,10 @@ public class CourseController : DefaultController
           using (var db = new DatabaseContext(this.configuration))
           {
                var q = from a in db.RecommendClasses
+                       where a.CourseSubcategory == subCategoryType
                        select a;
+               var totalPage = Math.Ceiling((decimal)q.Count()/ itemsPerPage);
+               var page = new PageModel(q.Count(), totalPage);
                IEnumerable<dynamic> data;
                if (string.IsNullOrEmpty(subCategoryType) != true)
                {
@@ -514,7 +518,10 @@ public class CourseController : DefaultController
                     data = q.Skip((currentPage - 1) * itemsPerPage)
                             .Take(itemsPerPage).ToList();
                }
-               return this.Ok(data);
+               var resp = new ResultModel();
+               resp.Source = data;
+               resp.Data = page;
+               return this.Ok(resp);
           }
      }
 }
