@@ -1213,7 +1213,7 @@ h1.section_title_center {
     padding: 0 10px;
     background: url(/assets/images/navbar-bg-04.png) no-repeat left center;
     background-size: cover;
-    min-height: 76px;
+    min-height: 68px;
 }
 
 .top-nav>.nav-header {

@@ -103,7 +103,7 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-
+   
             <div class="section">
                 <div class="container">
                     <h1>最新上架</h1>
@@ -353,13 +353,13 @@
                     window.location.href = `course.html?seq=${item.seq}`;
                 },
                 async onChange(val) {
-                    console.log(val.target.value);
-
+                    this.loading = true;
                     let params = getUrlQuery(this.params.mine);
                     const mine = await getMine(params);
                     if (mine.resultCode == 10) {
                         this.mine = mine.content;
                     }
+                    this.loading = false;
                 },
                 verifyToken(token) {
                     const data = {
