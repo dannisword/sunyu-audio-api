@@ -1211,7 +1211,7 @@ h1.section_title_center {
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
-    background: url(/assets/images/navbar-bg-04.png) no-repeat left center;
+    background: url('http://demo.sunyu-tech.com.tw/Audio/assets/images/navbar-bg-04.png') no-repeat left center;
     background-size: cover;
     min-height: 68px;
 }
