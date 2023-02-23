@@ -56,6 +56,15 @@ public class CourseServices : ICourseServices
                if (course != null)
                {
                     course.ViewHistories = context.ViewHistories?.Where(p => p.CourseSeq == seq).ToList();
+                    // 講師資訊
+                    var exp = context.ExpertDatas.Where(p => p.Seq == course.OtherLecturer);
+                    if (exp.Any())
+                    {
+
+                         course.AuthorName = exp.FirstOrDefault().Name;
+                         course.AuthorMemo = exp.FirstOrDefault().ExpertMemo;
+                         course.CourseImage = exp.FirstOrDefault().ExpertImage;
+                    }
                }
                return course;
           }
@@ -213,7 +222,7 @@ public class CourseServices : ICourseServices
                     data = q.Where(x => x.FunctionCategory == category)
                             .Include(x => x.Appendiies)
                             .Skip((currentPage - 1) * itemsPerPage)
-                            .Take(itemsPerPage).ToList(); 
+                            .Take(itemsPerPage).ToList();
                }
                else
                {

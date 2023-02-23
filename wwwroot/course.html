@@ -115,10 +115,10 @@
                         <div class="col-12 col-md-3 mt-2 mt-md-0">
                             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
-                                <a  id="video01-tab" data-toggle="pill"
-                                    data-target="#video01" type="button" role="tab" aria-controls="video01"
-                                    aria-selected="true" v-for="(item,idex) in course.appendiies" :key="idex" @click="onChang(item)"
-                                    :class="idex === active ? 'nav-link btn-light active':'nav-link btn-light'" >
+                                <a id="video01-tab" data-toggle="pill" data-target="#video01" type="button" role="tab"
+                                    aria-controls="video01" aria-selected="true"
+                                    v-for="(item,idex) in course.appendiies" :key="idex" @click="onChang(item)"
+                                    :class="idex === active ? 'nav-link btn-light active':'nav-link btn-light'">
                                     {{ item.unit }}
                                 </a>
                             </div>
@@ -140,7 +140,8 @@
                             <div class="border rounded">
                                 <div class="p-4 teacher_personal_bg">
                                     <div class="text-center">
-                                        <img src="assets/images/teacher01.png" alt="老師照片"
+
+                                        <img :src="course.courseImageBase46" alt="老師照片"
                                             class="teacher_personal_pic rounded-circle">
                                         <p class="teacher_name">{{course.authorName}}</p>
 
@@ -243,7 +244,6 @@
                     this.loading = true;
                     getCourse(this.seq)
                         .then((resp) => {
-                            console.log(resp);
                             this.course = resp;
                             this.appendix = this.course.appendiies[0];
                             this.course.teacherUrl = `${this.course.authorImageType} ${this.course.authorImage}`;
@@ -266,7 +266,7 @@
                     this.appendix = val;
                     // 取得觀看章節的 index
                     const idx = this.course.appendiies.indexOf(val);
-                    this.active = idx
+                    this.active = idx;
                     setTimeout(() => {
                         this.loading = false;
                     }, 500);
@@ -275,6 +275,8 @@
                     setViewHistoryEnd(this.viewHistory.seq).then((resp) => { });
                 },
                 onNav(page) {
+                    // 紀錄當前時間
+                    this.save(this.appendix, this.video);
                     window.location.href = page;
                 },
                 play(appendix) {
@@ -299,9 +301,9 @@
                         viewLastTime: video.currentTime,
                         deleteTag: 0,
                     };
-                    console.log(data);
+
                     setViewHistory(data).then((resp) => {
-                        console.log(resp);
+                        //console.log(resp);
                     });
                 },
                 setActive(index) {
@@ -316,6 +318,8 @@
                     this.active = active;
                 },
                 logout() {
+                    // 紀錄當前時間
+                    this.save(this.appendix, this.video);
                     localStorage.clear();
                     sessionStorage.clear();
                     window.location.href = "https://demo.sunyu-tech.com.tw/webdemo/";
