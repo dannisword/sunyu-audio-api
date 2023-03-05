@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:7197/Audio/",
+      "applicationUrl": "http://localhost:8010/Audio/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

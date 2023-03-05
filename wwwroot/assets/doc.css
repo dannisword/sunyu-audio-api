@@ -9,3 +9,15 @@
     background-color: rgba(97, 97, 97, 0.8);
     z-index: 2;
 }
+
+.box {
+    width: 300px;
+
+}
+
+.ellipsis {
+    line-height: 1.6em;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

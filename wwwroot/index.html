@@ -103,7 +103,7 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-   
+
             <div class="section">
                 <div class="container">
                     <h1>最新上架</h1>
@@ -198,7 +198,9 @@
                             </div>
                             <div class="w-100">
                                 <p class="mt-2 mb-0 font-weight-bold">{{item.name}}</p>
-                                <span v-html="item.expertMemo"></span>
+
+                                <span style="text-align:left"
+                                    v-html="$options.filters.ellipsis(item.expertMemo)"></span>
                             </div>
                         </div>
                     </div>
@@ -413,6 +415,17 @@
                 }
             }
         })
+        Vue.filter('ellipsis', function (value) {
+            if (!value) {
+                return '';
+            }
+            if (value.length > 38){
+                return value.slice(0, 38) + '...';
+            }
+            return value;
+
+        })
+
         vm.$mount('#app');
     </script>
 </body>
