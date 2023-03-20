@@ -164,9 +164,9 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, key) in recommends" :key="key">
-                                        <td align="left">{{ item.courseTitle }}</td>
+                                        <td align="left"> <a :href="item.courseURL" target="_blank">{{ item.courseTitle }}</a></td>
                                         <td>{{ item.courseTime }}</td>
-                                        <td>{{ item.courseTime }}</td>
+                                        <td>{{ item.participants }}</td>
                                         <td>{{ item.deadline }}</td>
                                     </tr>
 
@@ -288,7 +288,7 @@
                     const params = {
                         subCategoryType: recommendType,
                         currentPage: currentPage,
-                        itemsPerPage: 5
+                        itemsPerPage: 20
                     };
                     this.item = currentPage;
                     const data = getUrlQuery(params);
